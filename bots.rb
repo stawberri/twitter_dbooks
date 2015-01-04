@@ -217,6 +217,35 @@ module Danbooru
       true
     end
   end
+
+  # Pick and tweet a post based on tag settings.
+  def danbooru_select_and_tweet_post
+    # Everyone hates catching, but it seems more elegant than a done variable.
+    catch :success do
+      loop do
+        # Increment search_page (starting from 1)
+        search_page = search_page.to_i.next
+        # Fetch posts
+        posts = danbooru_posts(@config.danbooru_tags, search_page)
+        # Just break if we don't have posts
+        break if posts.empty?
+        # Now loop down each post, attempting to post it.
+        posts.each do |post|
+          post = OpenStruct.new post
+
+          # Skip this post if it's already in our history
+          next if danbooru_history_include? post.id
+          # Add post to history, since we've seen it now
+          danbooru_history_add post.id
+
+          # Attempt to tweet post, heading to next one if it didn't work
+          next unless danbooru_tweet_post post
+          # It worked!
+          throw :success
+        end
+      end
+    end
+  end
 end
 
 # Main twitterbot class
@@ -253,33 +282,11 @@ class DbooksBot < Ebooks::Bot
 
   # When twitter bot starts up
   def on_startup
+    # Tweet a post on startup
+    danbooru_select_and_tweet_post
     # Repeat this every tweet_interval
     scheduler.every config.tweet_interval do
-      # Everyone hates catching, but it seems more elegant than a done variable.
-      catch :success do
-        loop do
-          # Increment search_page (starting from 1)
-          search_page = search_page.to_i.next
-          # Fetch posts
-          posts = danbooru_posts(@config.danbooru_tags, search_page)
-          # Just break if we don't have posts
-          break if posts.empty?
-          # Now loop down each post, attempting to post it.
-          posts.each do |post|
-            post = OpenStruct.new post
-
-            # Skip this post if it's already in our history
-            next if danbooru_history_include? post.id
-            # Add post to history, since we've seen it now
-            danbooru_history_add post.id
-
-            # Attempt to tweet post, heading to next one if it didn't work
-            next unless danbooru_tweet_post post
-            # It worked!
-            throw :success
-          end
-        end
-      end
+      danbooru_select_and_tweet_post
     end
   end
 end
