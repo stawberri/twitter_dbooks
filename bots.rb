@@ -1,5 +1,7 @@
 require 'twitter_ebooks'
 require 'ostruct'
+require 'open-uri'
+require 'json'
 
 # Main twitterbot class
 class DbooksBot < Ebooks::Bot
@@ -30,8 +32,40 @@ class DbooksBot < Ebooks::Bot
     # Setup default danbooru params with danbooru login info
     @danbooru_default_params = {}
     unless config.danbooru_login.empty? && config.danbooru_key.empty?
-      @danbooru_default_params['login'] = URI.escape config.danbooru_login
-      @danbooru_default_params['api_key'] = URI.escape config.danbooru_key
+      @danbooru_default_params['login'] = config.danbooru_login
+      @danbooru_default_params['api_key'] = config.danbooru_key
+    end
+  end
+
+  # Wrapper for danbooru requests
+  def danbooru_get(query = 'posts', parameters = {})
+    # Begin generating a URI
+    uri = "https://danbooru.donmai.us/#{query}.json"
+
+    # Add default parameters to parameters
+    parameters = danbooru_default_params.merge parameters
+
+    # Loop through parameters if necessary
+    unless parameters.empty?
+      uri += '?'
+      # Create an array of parameters
+      parameters_array = []
+      parameters.each do |key, value|
+        parameters_array << "#{URI.escape key}=#{URI.escape value}"
+      end
+      # Merge them and add them to uri
+      uri += parameters_array.join ';'
+    end
+
+    # Access URI and grab data
+    open uri do |data|
+      # Extend data with a json parser
+      def data.json
+        @json ||= JSON.parse self
+      end
+
+      # Return it
+      data
     end
   end
 
