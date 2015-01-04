@@ -3,6 +3,8 @@ require 'ostruct'
 require 'open-uri'
 require 'json'
 
+require_relative 'tweetpic'
+
 # Main twitterbot class
 class DbooksBot < Ebooks::Bot
   # Config openstruct
@@ -80,7 +82,11 @@ class DbooksBot < Ebooks::Bot
 
   # Tweet a post with its post data
   def danbooru_tweet_post(post_data)
+    # Make post_data a hash if it isn't one already
+    post_data = post_data[0] if post_data.is_a? Array
+    post_data = danbooru_get("posts/#{post_data}") unless post_data.is_a? Hash
 
+    bot.log "Preparing to tweet post \##{post['id']}"
   end
 
   # When twitter bot starts up
