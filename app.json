@@ -10,10 +10,10 @@
   ],
   "env": {
     "TWITTER_KEY": {
-      "description": "Twitter Consumer Key (API Key)"
+      "description": "Twitter Consumer Key"
     },
     "TWITTER_SECRET": {
-      "description": "Twitter Consumer Secret (API Secret)"
+      "description": "Twitter Consumer Secret"
     },
     "TWITTER_TOKEN": {
       "description": "Twitter Access Token"
@@ -22,22 +22,21 @@
       "description": "Access Token Secret"
     },
     "DANBOORU_LOGIN": {
-      "description": "Danbooru Username",
+      "description": "Danbooru Username (optional)",
       "required": false
     },
     "DANBOORU_KEY": {
-      "description": "Danbooru API Key",
+      "description": "Danbooru API Key (optional)",
       "required": false
     },
     "DANBOORU_TAGS": {
-      "description": "Search Tags",
+      "description": "Search Tags (optional)",
       "value": "*",
       "required": false
     },
     "TWEET_INTERVAL": {
       "description": "Time Between Tweets",
-      "value": "30m",
-      "required": true
+      "value": "30m"
     }
   }
 }
