@@ -29,6 +29,9 @@ class DbooksBot < Ebooks::Bot
     @access_token = config.twitter_token
     @access_token_secret = config.twitter_tsecret
 
+    # Grab username if all of those variables have been set already
+    @username = twitter.user.screen_name if @consumer_key && @consumer_secret && @access_token && @access_token_secret
+
     # Setup default danbooru params with danbooru login info
     @danbooru_default_params = {}
     unless config.danbooru_login.empty? && config.danbooru_key.empty?
@@ -65,15 +68,19 @@ class DbooksBot < Ebooks::Bot
   end
 
   # Fetch posts from danbooru
-  def danbooru_posts(tags = '', page = 1)
+  def danbooru_posts(tags = @config.danbooru_tags, page = 1)
     danbooru_get 'posts', tags: tags, page: page
   end
 
   # When twitter bot starts up
   def on_startup
+    log danbooru_posts[0]
+
     # Repeat this every tweet_interval
     scheduler.every config.tweet_interval do
     end
+
+    exit;
   end
 end
 
