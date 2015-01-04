@@ -51,22 +51,22 @@ class DbooksBot < Ebooks::Bot
       # Create an array of parameters
       parameters_array = []
       parameters.each do |key, value|
-        parameters_array << "#{URI.escape key}=#{URI.escape value}"
+        # Convert key to a string if it's a symbol
+        parameters_array << "#{URI.escape key.to_s}=#{URI.escape value.to_s}"
       end
       # Merge them and add them to uri
       uri += parameters_array.join ';'
     end
 
-    # Access URI and grab data
-    open uri do |data|
-      # Extend data with a json parser
-      def data.json
-        @json ||= JSON.parse self
-      end
-
-      # Return it
-      data
+    # Access URI and convert data from json
+    open uri do |io|
+      JSON.parse io.read
     end
+  end
+
+  # Fetch posts from danbooru
+  def danbooru_posts(tags = '', page = 1)
+    danbooru_get 'posts', tags: tags, page: page
   end
 
   # When twitter bot starts up
