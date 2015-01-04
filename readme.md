@@ -59,8 +59,9 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
 ## Updates
 Right now, it looks like future updates might be a bit of a hassle unless Heroku adds in some kinda updating feature. To perform updates, you'll need to
-1. Locate and somehow save your current bot's settings, probably by manually copying them to Notepad or something.
-2. Shut down or delete your current bot's heroku app.
-3. Redeploy an entirely new bot to Heroku, pasting in your current bot's settings.
+
+1.  Locate and somehow save your current bot's settings, probably by manually copying them to Notepad or something.
+2.  Shut down or delete your current bot's heroku app.
+3.  Redeploy an entirely new bot to Heroku, pasting in your current bot's settings.
 
 Of course, if you have Heroku set up on your computer and stuff, you can also clone this repository and then push it onto Heroku yourself.
