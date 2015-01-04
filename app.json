@@ -1,0 +1,43 @@
+{
+  "name": "twitter_dbooks",
+  "description": "Danbooru API + twitter_ebooks",
+  "repository": "https://github.com/Stawberri/twitter_dbooks",
+  "keywords": [
+    "twitter",
+    "bot",
+    "images",
+    "pictures"
+  ],
+  "env": {
+    "TWITTER_KEY": {
+      "description": "Twitter Consumer Key (API Key)"
+    },
+    "TWITTER_SECRET": {
+      "description": "Twitter Consumer Secret (API Secret)"
+    },
+    "TWITTER_TOKEN": {
+      "description": "Twitter Access Token"
+    },
+    "TWITTER_TSECRET": {
+      "description": "Access Token Secret"
+    },
+    "DANBOORU_LOGIN": {
+      "description": "Danbooru Username",
+      "required": false
+    },
+    "DANBOORU_KEY": {
+      "description": "Danbooru API Key",
+      "required": false
+    },
+    "DANBOORU_TAGS": {
+      "description": "Search Tags",
+      "value": "*",
+      "required": false
+    },
+    "TWEET_INTERVAL": {
+      "description": "Time Between Tweets",
+      "value": "30m",
+      "required": true
+    }
+  }
+}

@@ -34,6 +34,56 @@ module Danbooru
   # Default danbooru request parameters
   attr_reader :danbooru_default_params
 
+  # Initialization for danbooru methods
+  def danbooru_configure
+    # Setup default danbooru params with danbooru login info
+    @danbooru_default_params = {}
+    unless config.danbooru_login.empty? && config.danbooru_key.empty?
+      @danbooru_default_params['login'] = config.danbooru_login
+      @danbooru_default_params['api_key'] = config.danbooru_key
+    end
+
+    # Populate history
+    danbooru_populate_history
+  end
+
+  # Populate post history from twitter
+  def danbooru_populate_history
+    # Get past tweets
+    my_tweets = twitter.user_timeline username, count: 200
+
+    # Iterate through them, adding them to history if they contain a danbooru uri
+    my_tweets.each do |tweet|
+      # Loop through each tweet's uri
+      tweet.uris.each do |uri|
+        if match_data = uri.expanded_url.to_s.match(%r //danbooru\.donmai\.us/posts/(?<post_id>\d+) i)
+          # If it matches, add it to history
+          danbooru_history_add match_data['post_id']
+        end
+      end
+    end
+  end
+
+  # Add a post id to history
+  def danbooru_history_add(post_id)
+    # Create a history array if it doesn't already exist
+    @danbooru_post_history ||= []
+
+    post_id = post_id.to_i
+
+    # Convert it to an integer and then add it
+    @danbooru_post_history << post_id
+
+    post_id
+  end
+
+  # Check if a post id is in history
+  def danbooru_history_include?(post_id)
+    return false unless defined? @danbooru_post_history
+
+    @danbooru_post_history.include? post_id
+  end
+
   # Wrapper for danbooru requests
   def danbooru_get(query = 'posts', parameters = {})
     query ||= posts
@@ -131,9 +181,11 @@ module Danbooru
   # Tweet a post with its post data
   def danbooru_tweet_post(post)
     # Make post an OpenStruct
-    post = post[0] if post.is_a? Array
-    post = danbooru_get("posts/#{post}") unless post.is_a? Hash
-    post = OpenStruct.new post
+    unless post.is_a? OpenStruct
+      post = post[0] if post.is_a? Array
+      post = danbooru_get("posts/#{post}") unless post.is_a? Hash
+      post = OpenStruct.new post
+    end
 
     # Is post in a format we like?
     return false unless ['jpg','jpeg','png'].include? post.file_ext
@@ -144,19 +196,26 @@ module Danbooru
     # Get a tag string
     tag_string = danbooru_tag_string post
     tag_string.extend PuddiString
-    tag_string = ' ' + tag_string.trim_ellipsis(94) unless tag_string.empty?
+    # 93 = 140 - 2 (spaces) - 23 (https url) - 22 (http url)
+    tag_string = ' ' + tag_string.trim_ellipsis(93) unless tag_string.empty?
 
     # Get post URI
     post_uri = "https://danbooru.donmai.us/posts/#{post.id}"
 
     # Get image URI
-    image_uri = "https://danbooru.donmai.us/#{post.large_file_url}"
+    image_uri = "https://danbooru.donmai.us#{post.large_file_url}"
 
     # Tweet post!
     log "Tweeting post #{post.id}, rating: #{post.rating}"
-    pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
-
-    true
+    begin
+      pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
+    rescue => error
+      log "Error while tweeting: #{error.class.to_s}: #{error.message}"
+      log error.backtrace.join "\n"
+      false
+    else
+      true
+    end
   end
 end
 
@@ -189,22 +248,38 @@ class DbooksBot < Ebooks::Bot
     # Grab username if all of those variables have been set already
     @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret
 
-    # Setup default danbooru params with danbooru login info
-    @danbooru_default_params = {}
-    unless config.danbooru_login.empty? && config.danbooru_key.empty?
-      @danbooru_default_params['login'] = config.danbooru_login
-      @danbooru_default_params['api_key'] = config.danbooru_key
-    end
+    danbooru_configure
   end
 
   # When twitter bot starts up
   def on_startup
-    danbooru_tweet_post danbooru_posts
-
-    exit;
-
     # Repeat this every tweet_interval
     scheduler.every config.tweet_interval do
+      # Everyone hates catching, but it seems more elegant than a done variable.
+      catch :success do
+        loop do
+          # Increment search_page (starting from 1)
+          search_page = search_page.to_i.next
+          # Fetch posts
+          posts = danbooru_posts(@config.danbooru_tags, search_page)
+          # Just break if we don't have posts
+          break if posts.empty?
+          # Now loop down each post, attempting to post it.
+          posts.each do |post|
+            post = OpenStruct.new post
+
+            # Skip this post if it's already in our history
+            next if danbooru_history_include? post.id
+            # Add post to history, since we've seen it now
+            danbooru_history_add post.id
+
+            # Attempt to tweet post, heading to next one if it didn't work
+            next unless danbooru_tweet_post post
+            # It worked!
+            throw :success
+          end
+        end
+      end
     end
   end
 end
