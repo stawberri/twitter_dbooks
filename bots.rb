@@ -1,55 +1,32 @@
 require 'twitter_ebooks'
+require 'ostruct'
 
-# This is an example bot definition with event handlers commented out
-# You can define and instantiate as many bots as you like
+# Main twitterbot class
+class DbooksBot < Ebooks::Bot
+  # Config variable. Doesn't need to be an accessor.
+  attr_reader :config
 
-class MyBot < Ebooks::Bot
-  # Configuration here applies to all MyBots
+  # Inital twitterbot setup
   def configure
-    # Consumer details come from registering an app at https://dev.twitter.com/
-    # Once you have consumer details, use "ebooks auth" for new access tokens
-    self.consumer_key = '' # Your app consumer key
-    self.consumer_secret = '' # Your app consumer secret
+    # Load twitter configuration from environment variables.
+    @consumer_key = ENV['TWITTER_KEY']
+    @consumer_secret = ENV['TWITTER_SECRET']
+    @access_token = ENV['TWITTER_TOKEN']
+    @access_token_secret = ENV['TWITTER_TSECRET']
 
-    # Users to block instead of interacting with
-    self.blacklist = ['tnietzschequote']
-
-    # Range in seconds to randomize delay when bot.delay is called
-    self.delay_range = 1..6
+    # Load other configuration options
+    @config = OpenStruct.new
+    @config.danbooru_login = ENV['DANBOORU_LOGIN']
+    @config.danbooru_key = ENV['DANBOORU_KEY']
+    @config.danbooru_tags = ENV['DANBOORU_TAGS']
+    @config.tweet_interval = ENV['TWEET_INTERVAL']
   end
 
   def on_startup
-    scheduler.every '24h' do
-      # Tweet something every 24 hours
-      # See https://github.com/jmettraux/rufus-scheduler
-      # tweet("hi")
-      # pictweet("hi", "cuteselfie.jpg")
+    scheduler.every config.tweet_interval do
     end
   end
-
-  def on_message(dm)
-    # Reply to a DM
-    # reply(dm, "secret secrets")
-  end
-
-  def on_follow(user)
-    # Follow a user back
-    # follow(user.screen_name)
-  end
-
-  def on_mention(tweet)
-    # Reply to a mention
-    # reply(tweet, "oh hullo")
-  end
-
-  def on_timeline(tweet)
-    # Reply to a tweet in the bot's timeline
-    # reply(tweet, "nice tweet")
-  end
 end
 
-# Make a MyBot and attach it to an account
-MyBot.new("") do |bot|
-  bot.access_token = "" # Token connecting the app to this account
-  bot.access_token_secret = "" # Secret connecting the app to this account
-end
+# Make DbooksBot!
+DbooksBot.new ''
