@@ -1,1 +1,1 @@
-web: bundle exec ebooks start
+worker: bundle exec ebooks start
