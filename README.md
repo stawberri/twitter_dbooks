@@ -35,7 +35,13 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
       You should end up on your new Twitter App's Details page. Head over to its "Permissions" tab. While "Read and Write" is enough for now, you might want to set it to "Read, Write, and Access direct messages" to future proof your API keys and stuff. That's one of the reasons why you should have made a new account for your bot! Make sure you save your settings. Your bot can't do anything if it can only read timelines!
 
-      Now head over to your app's "Keys and Access Tokens" tab. You should see two rows of random characters that you can use to fill out part of your Heroku deployment form now! Just copy your Consumer Key and Secret over to `TWITTER_KEY` and `TWITTER_SECRET`, respectively. Once you've done that, scroll down a bit to "Your Access Token" and click, "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TSECRET`, respectively!
+      Now head over to your app's "Keys and Access Tokens" tab. You should see two rows of random characters that you can use to fill out part of your Heroku deployment form now! Just copy your Consumer Key and Secret over to `TWITTER_KEY` and `TWITTER_SECRET`, respectively.
+
+      Scroll down a bit to "Your Access Token" and click "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TSECRET`, respectively! If your access token does not have a write access level, you'll need to make sure your permissions are set correctly, and then click on "Regenerate My Access Token and Token Secret" to update your access token.
+
+      Note that you can't *just* edit your app's permissions. You also need to regenerate your access token afterward. If this wasn't the case, then bad guys could ask you to allow their apps to read your tweets, and then once you do so, they can secretly change their apps to be able to tweet on your behalf. You wouldn't want that!
+
+      ![Twitter Settings](https://cloud.githubusercontent.com/assets/9897819/5617856/037b0af2-94c8-11e4-9530-38c3eef64b43.jpg)
 
     * **Danbooru Settings**
 
@@ -122,7 +128,7 @@ To perform updates, you'll need to:
 2.  Shut down or delete your current bot's heroku app, using the scary red button at the bottom of its Settings tab.
 3.  Redeploy an entirely new bot to Heroku, pasting in your current bot's settings.
 
-Of course, if you have Heroku set up on your computer and stuff, you can also clone this repository and then push it onto Heroku yourself.
+Of course, if you have Heroku set up on your computer and stuff, you can also clone this repository and then push it onto Heroku yourself, or you can just do your bot installation all over again. Since you already have a twitter app and permissions all set up, it's just a matter of finding your keys again.
 
 # Changes
 
