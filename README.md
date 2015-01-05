@@ -5,6 +5,7 @@
 twitter_dbooks is a pre-written twitter_ebooks bot that allows *anyone* to set up their very own anime image tweeting bot. See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot.
 
 ## Installation
+
 All you need is a web browser and a couple minutes to set up your new image bot! I'd be really grateful if you told people you're using my code, though! If you need any help, please feel free to ask me on Twitter. I'm [@stawbewwi](https://twitter.com/stawbewwi).
 
 1.  **Starting out**
@@ -12,6 +13,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
     Click my pretty [Deploy to Heroku](https://heroku.com/deploy) button above.
 
 2.  **Fill out your environment variables (settings)**
+
     You can set your app name to anything you like. It (probably) won't be visible to anyone else unless you tell them.
 
     *   **Twitter Settings**
@@ -93,6 +95,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
     Cross your fingers for good luck, and then head over to Twitter. You should see that your bot has already gotten to work!
 
 ## Configuration
+
 You should have already set up your bot already, but changing your settings (or accessing them for future updates) is easy!
 
 1.  Head over to your [Heroku dashboard](https://dashboard.heroku.com/) and select your app.
@@ -103,6 +106,7 @@ You should have already set up your bot already, but changing your settings (or 
     Don't edit the boxes with words in ALL_CAPS, though, or weird stuff might happen.
 
 ## Updates
+
 Right now, it looks like future updates might be a bit of a hassle unless Heroku adds in some kinda updating feature.
 To perform updates, you'll need to:
 
