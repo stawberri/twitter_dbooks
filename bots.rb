@@ -255,7 +255,7 @@ module PuddiServer
     # Create a new thread for this
     Thread.start do
       # Create a server
-      server = TCPServer.new 5000
+      server = TCPServer.new @config.port
       loop do
         # Wait for a request and start a new thread to deal with it.
         Thread.start server.accept do |io|
@@ -290,6 +290,7 @@ class DbooksBot < Ebooks::Bot
     @config.danbooru_key = ENV['DANBOORU_KEY'].chomp
     @config.danbooru_tags = ENV['DANBOORU_TAGS'].chomp
     @config.tweet_interval = ENV['TWEET_INTERVAL'].chomp
+    @config.port = ENV['PORT'].chomp
 
     # Load configuration into twitter variables
     @consumer_key = config.twitter_key
