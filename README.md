@@ -1,8 +1,8 @@
-# twitter_dbooks v1
+# twitter_dbooks v1: Humble Beginnings
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-twitter_dbooks is a pre-written twitter_ebooks bot that allows *anyone* to set up their very own anime image tweeting bot. See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot.
+twitter_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot.
 
 ## Usage
 
