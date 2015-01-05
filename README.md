@@ -80,6 +80,8 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
         On your Resources tab, you'll find a section labeled Dynos. It should have a bar labeled worker in it. Click the "Edit" button to edit your dynos. Your "worker" bar should turn into a very scary looking setting bar that you can drag.
 
+        ![Edit Dynos](https://cloud.githubusercontent.com/assets/9897819/5611557/f2d29b70-947c-11e4-8caa-1fe7cd313edd.jpg)
+
     3.  **Scaling your worker**
 
         Ensure that the little dropdown next to your worker's bar is set to 1X, unless you're rich. Very carefully drag its setting handle ever so slightly to the right, so that it now says 1.
@@ -90,6 +92,8 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
         Once you're absolutely sure Heroku isn't going to charge you (because all of the dollar signs say 0), go ahead and click on your app's Dynos' "Save" button. It should be where you found its "Edit" button before.
 
+        ![Saving Dyno Settings](https://cloud.githubusercontent.com/assets/9897819/5611611/8a697fc6-947d-11e4-9357-688c854dbd1c.jpg)
+
 8.  **You're done!**
 
     Cross your fingers for good luck, and then head over to Twitter. You should see that your bot has already gotten to work!
@@ -98,7 +102,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
 You should have already set up your bot already, but changing your settings (or accessing them for future updates) is easy!
 
-1.  Head over to your [Heroku dashboard](https://dashboard.heroku.com/) and select your app.
+1.  Head over to your [Heroku dashboard](https://dashboard.heroku.com/) and select your app by clicking on its name.
 2.  Click on your app's "Settings" tab.
 3.  You can rename your app through the "Name" field available on this page.
 4.  On your app's Settings tab's Config Variables section, click on "Reveal Config Vars" to open up your Config Vars editor.
