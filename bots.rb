@@ -2,7 +2,6 @@ require 'twitter_ebooks'
 require 'ostruct'
 require 'open-uri'
 require 'json'
-require 'socket'
 
 require_relative 'tweetpic'
 
@@ -249,31 +248,9 @@ module Danbooru
   end
 end
 
-# Simple redirect webserver
-module PuddiServer
-  def server_create
-    # Create a new thread for this
-    Thread.start do
-      # Create a server
-      server = TCPServer.new 5000
-      loop do
-        # Wait for a request and start a new thread to deal with it.
-        Thread.start server.accept do |io|
-          # Respond to it by redirecting to twitter page
-          io.print "HTTP/1.1 301 Moved Permanently\r\n"
-          io.print "Location: https://twitter.com/#{username}\r\n"
-          io.print "Connection: close\r\n"
-          # Close
-          io.close
-        end
-      end
-    end
-  end
-end
-
 # Main twitterbot class
 class DbooksBot < Ebooks::Bot
-  include Danbooru, PuddiServer
+  include Danbooru
 
   # Config openstruct
   attr_reader :config
@@ -301,7 +278,6 @@ class DbooksBot < Ebooks::Bot
     @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret
 
     danbooru_configure
-    server_create
   end
 
   # When twitter bot starts up
