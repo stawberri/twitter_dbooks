@@ -14,7 +14,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 2.  **Fill out your environment variables (settings)**
     You can set your app name to anything you like. It (probably) won't be visible to anyone else unless you tell them.
 
-    *   Twitter Settings
+    *   **Twitter Settings**
 
         ```
         TWITTER_KEY - Twitter Consumer Key
@@ -31,7 +31,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
         Now head over to your app's "Keys and Access Tokens" tab. You should see two rows of random characters that you can use to fill out part of your Heroku deployment form now! Just copy your Consumer Key and Secret over to `TWITTER_KEY` and `TWITTER_SECRET`, respectively. Once you've done that, scroll down a bit to "Your Access Token" and click, "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TSECRET`, respectively!
 
-    *   Danbooru Settings
+    *   **Danbooru Settings**
 
         ```
         DANBOORU_LOGIN - Danbooru Username (optional)
@@ -44,7 +44,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
         Oh, and just in case you might use your account more later on, you might want to remember ***not*** to use the same login name on Danbooru as you do elsewhere, unless you're an exhibitionist!
 
-    *   Content Setting
+    *   **Content Setting**
 
         ```
         DANBOORU_TAGS - Search Tags (optional) - default: *
@@ -52,7 +52,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
         This is what sets your bot apart from all the other bots! You'll need to do [your own research](http://danbooru.donmai.us/wiki_pages/43049) on this though, since if I tried to list all the tags you could use here, this installation guide would get *reallly* long! You might want to [test out your search](http://danbooru.donmai.us/wiki_pages/43037) on Danbooru itself before you set up your bot to do a particular search, though. If you restart your Twitter bot too many times in a really short timeframe (and it's a stupidly low number), Twitter will get annoyed and refuse to let your bot start anymore for a couple minutes.
 
-    *   Patience Setting
+    *   **Patience Setting**
 
         ```
         TWEET_INTERVAL - Time Between Tweets - default: 30m
@@ -68,23 +68,23 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
     Unfortunately, Heroku is pretty lazy, and doesn't like doing anything other than what you tell it to do! You just told it to build your bot, and it was more than happy to do so, but it didn't actually start running it for you.
 
-    1.  Finding your app's Resources tab.
+    1.  **Finding your app's Resources tab**
 
         Under Heroku's "Your app was successfully deployed" message, click on "make your first edit." You'll find yourself on a super confusing page you don't need to worry about! Go ahead and select "Resources" near the top (it's a tab).
 
         If you already accidentally left that page, go ahead and head over to your [main Heroku Dashboard](https://dashboard.heroku.com/) and click on the name of your bot's app. You should already be on its "Resources" tab, but go ahead and click on it if you aren't.
 
-    2.  Clicking Edit
+    2.  **Clicking Edit**
 
         On your Resources tab, you'll find a section labeled Dynos. It should have a bar labeled worker in it. Click the "Edit" button to edit your dynos. Your "worker" bar should turn into a very scary looking setting bar that you can drag.
 
-    3.  Scaling your worker
+    3.  **Scaling your worker**
 
         Ensure that the little dropdown next to your worker's bar is set to 1X, unless you're rich. Very carefully drag its setting handle ever so slightly to the right, so that it now says 1.
 
         Ensure that the price listed next to the bar says $0, unless you're rich. If it doesn't say $0, you either forgot to ensure your Worker dyno is set to 1X, you didn't drag its settings bar to 1, or Heroku has suddenly gotten more greedy.
 
-    4.  Saving your settings
+    4.  **Saving your settings**
 
         Once you're absolutely sure Heroku isn't going to charge you (because all of the dollar signs say 0), go ahead and click on your app's Dynos' "Save" button. It should be where you found its "Edit" button before.
 
