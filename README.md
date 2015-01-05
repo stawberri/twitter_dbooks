@@ -9,9 +9,9 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
 1.  **Starting out**
 
-    Click my pretty [Deploy to Heroku](https://heroku.com/deploy) button above.
+    Click my fancy [Deploy to Heroku](https://heroku.com/deploy) button above.
 
-2.  **Fill out your environment variables (settings)**
+2.  **Configure Twitter**
 
     ```
     TWITTER_KEY
@@ -28,6 +28,8 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
     Now head over to your app's "Keys and Access Tokens" tab. You should see two rows of random characters that you can use to fill out part of your Heroku deployment form now! Just copy your Consumer Key and Secret over to `TWITTER_KEY` and `TWITTER_SECRET`, respectively. Once you've done that, scroll down a bit to "Your Access Token" and click, "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TSECRET`, respectively!
 
+3.  **Danbooru Login**
+
     ```
     DANBOORU_LOGIN
     DANBOORU_KEY
@@ -39,21 +41,21 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
     Oh, and just in case you might use your account more later on, you might want to remember ***not*** to use the same login name on Danbooru as you do elsewhere, unless you're an exhibitionist!
 
+4.  **Danbooru Tags**
+
     ```
     DANBOORU_TAGS
     ```
 
     This is what sets your bot apart from all the other bots! You'll need to do [your own research](http://danbooru.donmai.us/wiki_pages/43049) on this though, since if I tried to list all the tags you could use here, this installation guide would get *reallly* long! You might want to [test out your search](http://danbooru.donmai.us/wiki_pages/43037) on Danbooru itself before you set up your bot to do a particular search, though. If you restart your Twitter bot too many times in a really short timeframe (and it's a stupidly low number), Twitter will get annoyed and refuse to let your bot start anymore for a couple minutes.
 
+5.  **Tweet Interval**
+
     ```
     TWEET_INTERVAL
     ```
 
     Here, you can decide how long your bot waits between tweets! You can learn more about what you can set this to on [twitter_ebooks's scheduler's github page](https://github.com/jmettraux/rufus-scheduler), but you can set it to any number ending in s, m, h, d, or y to set it to that many seconds, minutes, hours, days, or years, respectively! I recommend minutes. If you make it too slow, you might as well just tweet your own images, and if you make it too fast, Twitter will get annoyed and put your bot in time-out.
-
-6.  **Deploy**
-
-    Click Heroku's big purple finish button. Wait for it to build your bot. Once it's done, head over to twitter. You should see that your bot has already gotten to work!
 
 ## Updates
 Right now, it looks like future updates might be a bit of a hassle unless Heroku adds in some kinda updating feature. To perform updates, you'll need to

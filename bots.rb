@@ -251,7 +251,7 @@ end
 
 # Simple redirect webserver
 module PuddiServer
-  def server_configure
+  def server_create
     # Create a new thread for this
     Thread.start do
       # Create a server
@@ -259,8 +259,6 @@ module PuddiServer
       loop do
         # Wait for a request and start a new thread to deal with it.
         Thread.start server.accept do |io|
-          # Log Request
-          log "Request from #{io.peeraddr[3]}: #{io.gets.chomp}"
           # Respond to it by redirecting to twitter page
           io.print "HTTP/1.1 301 Moved Permanently\r\n"
           io.print "Location: https://twitter.com/#{username}\r\n"
@@ -294,12 +292,6 @@ class DbooksBot < Ebooks::Bot
     @config.tweet_interval = ENV['TWEET_INTERVAL'].chomp
     @config.port = ENV['PORT'].chomp
 
-    twitter_configure
-    danbooru_configure
-    server_configure
-  end
-
-  def twitter_configure
     # Load configuration into twitter variables
     @consumer_key = config.twitter_key
     @consumer_secret = config.twitter_secret
@@ -308,6 +300,9 @@ class DbooksBot < Ebooks::Bot
 
     # Grab username if all of those variables have been set already
     @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret
+
+    danbooru_configure
+    server_create
   end
 
   # When twitter bot starts up
