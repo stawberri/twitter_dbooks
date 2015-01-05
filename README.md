@@ -4,6 +4,10 @@
 
 twitter_dbooks is a pre-written twitter_ebooks bot that allows *anyone* to set up their very own anime image tweeting bot. See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot.
 
+## Usage
+
+Feel free to use twitter_dbooks to make *any* image bot you want! If you want to make me really grateful and happy, please don't hesitate to add a little blurb to your bot's profile about twitter_dbooks! Something like `Made with @_dbooks!` or even just any mention of `@_dbooks` would be enough!
+
 ## Installation
 
 All you need is a web browser and a couple minutes to set up your new image bot! I'd be really grateful if you told people you're using my code, though! If you need any help, please feel free to ask me on Twitter. I'm [@stawbewwi](https://twitter.com/stawbewwi).
