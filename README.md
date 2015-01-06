@@ -1,4 +1,4 @@
-# twitter_dbooks v1.1.0: Humble Beginnings
+# twitter_dbooks v2.0.0: TBD
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
