@@ -48,9 +48,9 @@ module Danbooru
   end
 
   # Populate post history from twitter
-  def danbooru_populate_history
+  def danbooru_populate_history(tweet_count = 200)
     # Get past tweets
-    my_tweets = twitter.user_timeline username, count: 200
+    my_tweets = twitter.user_timeline username, count: tweet_count
 
     # Iterate through them, adding them to history if they contain a danbooru uri
     my_tweets.each do |tweet|
