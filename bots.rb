@@ -262,7 +262,7 @@ class DbooksBot < Ebooks::Bot
     @config.twitter_key = ENV['TWITTER_KEY'].chomp
     @config.twitter_secret = ENV['TWITTER_SECRET'].chomp
     @config.twitter_token = ENV['TWITTER_TOKEN'].chomp
-    @config.twitter_tsecret = ENV['TWITTER_TSECRET'].chomp
+    @config.twitter_token_secret = ENV['TWITTER_TOKEN_SECRET'].chomp
     @config.danbooru_login = ENV['DANBOORU_LOGIN'].chomp
     @config.danbooru_key = ENV['DANBOORU_KEY'].chomp
     @config.danbooru_tags = ENV['DANBOORU_TAGS'].chomp
@@ -272,7 +272,7 @@ class DbooksBot < Ebooks::Bot
     @consumer_key = config.twitter_key
     @consumer_secret = config.twitter_secret
     @access_token = config.twitter_token
-    @access_token_secret = config.twitter_tsecret
+    @access_token_secret = config.twitter_token_secret
 
     # Grab username if all of those variables have been set already
     @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret

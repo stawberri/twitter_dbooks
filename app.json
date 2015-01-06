@@ -18,7 +18,7 @@
     "TWITTER_TOKEN": {
       "description": "Twitter Access Token"
     },
-    "TWITTER_TSECRET": {
+    "TWITTER_TOKEN_SECRET": {
       "description": "Twitter Access Token Secret"
     },
     "DANBOORU_LOGIN": {

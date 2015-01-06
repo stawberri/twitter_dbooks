@@ -2,7 +2,9 @@
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-twitter_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot.
+twitter_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, twitter_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
+
+See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot that has been setup to tweet the most popular images from the last day.
 
 ## Usage
 
@@ -26,7 +28,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
       TWITTER_KEY - Twitter Consumer Key
       TWITTER_SECRET - Twitter Consumer Secret
       TWITTER_TOKEN - Twitter Access Token
-      TWITTER_TSECRET - Twitter Access Token Secret
+      TWITTER_TOKEN_SECRET - Twitter Access Token Secret
       ```
 
       Unless you intend to have your own Twitter account tweet images, you'll want to [create a new Twitter account](https://twitter.com/signup) for your bot. Remember, if you use Gmail (and probably some other email services), you don't even need to create a new email account. Just sign up with `youremail+mylewdbot@gmail.com` or something like that as your email. It'll work!
@@ -39,7 +41,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
       Now head over to your app's "Keys and Access Tokens" tab. You should see two rows of random characters that you can use to fill out part of your Heroku deployment form now! Just copy your Consumer Key and Secret over to `TWITTER_KEY` and `TWITTER_SECRET`, respectively.
 
-      Scroll down a bit to "Your Access Token" and click "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TSECRET`, respectively! If your access token does not have a write access level, you'll need to make sure your permissions are set correctly, and then click on "Regenerate My Access Token and Token Secret" to update your access token.
+      Scroll down a bit to "Your Access Token" and click "Create my Access Token" if you need to. Ensure that your "Access Level" says that your app can write (at least), and then copy your Access Token and Secret over to `TWITTER_TOKEN` and `TWITTER_TOKEN_SECRET`, respectively! If your access token does not have a write access level, you'll need to make sure your permissions are set correctly, and then click on "Regenerate My Access Token and Token Secret" to update your access token.
 
       Note that you can't *just* edit your app's permissions. You also need to regenerate your access token afterward. If this wasn't the case, then bad guys could ask you to allow their apps to read your tweets, and then once you do so, they can secretly change their apps to be able to tweet on your behalf. You wouldn't want that!
 
