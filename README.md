@@ -1,4 +1,4 @@
-# twitter_dbooks v1: Humble Beginnings
+# twitter_dbooks v1.1.0: Humble Beginnings
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
@@ -133,10 +133,3 @@ To perform updates, you'll need to:
 3.  Redeploy an entirely new bot to Heroku, pasting in your current bot's settings.
 
 Of course, if you have Heroku set up on your computer and stuff, you can also clone this repository and then push it onto Heroku yourself, or you can just do your bot installation all over again. Since you already have a twitter app and permissions all set up, it's just a matter of finding your keys again.
-
-# Changes
-
-* v1: Humble Beginnings
-  * Named code twitter_dbooks
-  * Massive rewrite of code
-  * Updated twitter_dbooks to twitter_ebooks v3
