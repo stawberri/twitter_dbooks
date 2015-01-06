@@ -81,7 +81,7 @@ module Danbooru
   def danbooru_history_include?(post_id)
     return false unless defined? @danbooru_post_history
 
-    @danbooru_post_history.include? post_id
+    @danbooru_post_history.include? post_id.to_i
   end
 
   # Wrapper for danbooru requests
