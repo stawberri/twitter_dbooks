@@ -45,7 +45,7 @@ All you need is a web browser and a couple minutes to set up your new image bot!
 
       Note that you can't *just* edit your app's permissions. You also need to regenerate your access token afterward. If this wasn't the case, then bad guys could ask you to allow their apps to read your tweets, and then once you do so, they can secretly change their apps to be able to tweet on your behalf. You wouldn't want that!
 
-      ![Twitter Settings](https://cloud.githubusercontent.com/assets/9897819/5620903/39c02670-94e5-11e4-90ee-b351b98d01ad.jpg)
+      ![Twitter Settings](https://cloud.githubusercontent.com/assets/9897819/5625719/397b7e3a-9535-11e4-9603-f8b6d5ad8d9a.jpg)
 
     * **Danbooru Settings**
 
