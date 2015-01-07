@@ -1,4 +1,4 @@
-# twitter_dbooks v1.1.1: Humble Beginnings
+# twitter_dbooks v1.1.2: Humble Beginnings
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
