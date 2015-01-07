@@ -109,8 +109,12 @@ module Danbooru
     end
 
     # Access URI and convert data from json
-    open uri do |io|
-      JSON.parse io.read
+    begin
+      open uri do |io|
+        JSON.parse io.read
+      end
+    rescue => error
+      log "Error while fetching data (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
     end
   end
 
@@ -210,8 +214,7 @@ module Danbooru
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
     rescue => error
-      log "Error while tweeting: #{error.class.to_s}: #{error.message}"
-      log error.backtrace.join "\n"
+      log "Error while tweeting (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
       false
     else
       true
