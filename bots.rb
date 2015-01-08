@@ -115,6 +115,7 @@ module Danbooru
       end
     rescue => error
       log "Error while fetching data (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
+      {}
     end
   end
 
@@ -188,6 +189,8 @@ module Danbooru
     unless post.is_a? OpenStruct
       post = post[0] if post.is_a? Array
       post = danbooru_get("posts/#{post}") unless post.is_a? Hash
+      # Ensure that it contains an id.
+      return unless post.has_key? 'id'
       post = OpenStruct.new post
     end
 
