@@ -69,10 +69,10 @@ module Danbooru
     # Create a history array if it doesn't already exist
     @danbooru_post_history ||= []
 
-    post_id = post_id.to_i
+    post_id = [post_id.to_i]
 
     # Convert it to an integer and then add it
-    @danbooru_post_history << post_id
+    @danbooru_post_history |= post_id
 
     post_id
   end
@@ -288,8 +288,10 @@ class DbooksBot < Ebooks::Bot
 
   # When twitter bot starts up
   def on_startup
-    # Tweet a post on startup
-    danbooru_select_and_tweet_post
+    # Tweet a post on startup (in a thread, like scheduler does)
+    Thread.start do
+      danbooru_select_and_tweet_post
+    end
     # Repeat this every tweet_interval
     scheduler.every config.tweet_interval do
       danbooru_select_and_tweet_post
