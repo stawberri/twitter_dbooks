@@ -81,7 +81,7 @@ module Danbooru
   def danbooru_history_include?(post_id)
     return false unless defined? @danbooru_post_history
 
-    @danbooru_post_history.include? post_id
+    @danbooru_post_history.include? post_id.to_i
   end
 
   # Wrapper for danbooru requests
@@ -109,8 +109,13 @@ module Danbooru
     end
 
     # Access URI and convert data from json
-    open uri do |io|
-      JSON.parse io.read
+    begin
+      open uri do |io|
+        JSON.parse io.read
+      end
+    rescue => error
+      log "Error while fetching data (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
+      {}
     end
   end
 
@@ -184,6 +189,8 @@ module Danbooru
     unless post.is_a? OpenStruct
       post = post[0] if post.is_a? Array
       post = danbooru_get("posts/#{post}") unless post.is_a? Hash
+      # Ensure that it contains an id.
+      return unless post.has_key? 'id'
       post = OpenStruct.new post
     end
 
@@ -210,8 +217,7 @@ module Danbooru
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
     rescue => error
-      log "Error while tweeting: #{error.class.to_s}: #{error.message}"
-      log error.backtrace.join "\n"
+      log "Error while tweeting (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
       false
     else
       true
