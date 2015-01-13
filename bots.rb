@@ -24,6 +24,17 @@ module PuddiString
     return self if length <= len
     # It's not, so find out how short we have to trim to.
     real_length = len - cap.length
+
+    # Are we trimming to nothing?
+    if real_length < 1
+      # Does cap fit in remaining length?
+      if cap.length == len
+        return cap
+      else
+        return ''
+      end
+    end
+
     # Now just return the trimmed string!
     self[0...real_length] + cap
   end
