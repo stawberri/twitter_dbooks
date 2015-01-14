@@ -4,7 +4,7 @@
 
 twitter_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, twitter_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
 
-See [@kangaroo_ebooks](https://twitter.com/kangaroo_ebooks) for an example bot that has been setup to tweet the most popular images from the last day.
+See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot that tweets the most popular images from a day ago.
 
 ## Usage
 
