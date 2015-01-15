@@ -291,7 +291,7 @@ module Biotags
     if defined? user
       # Fetch twitter description and grab its biotags
       if match_data = user.description.match(/@_dbooks/i)
-        config_hash.merge! biotags_parse match_data.post_match
+        config_hash.merge! biotags_parse(match_data.post_match, config_hash['danbooru_tags'])
       end
     end
     @config = OpenStruct.new config_hash
@@ -305,7 +305,45 @@ module Biotags
   end
 
   # Create a hash from parsing input string
-  def biotags_parse(biotag_string)
+  def biotags_parse(biotag_string, danbooru_tags = [])
+    danbooru_tags = [] unless danbooru_tags.is_a? Array
+
+    # Create destination hash
+    destination_hash = {}
+
+    # Create an array of tags.
+    biotag_array = biotag_string.split ' '
+
+    # Iterate through them
+    biotag_array.each do |item|
+      # Is it a biotag?
+      if item.start_with? '%'
+        # It is. Get some variables.
+        item = item[1..-1]
+        if match_data = item.match(/:/)
+          key = match_data.pre_match
+          value = match_data.post_match
+        else
+          key = item
+          value = true
+        end
+
+        # Convert all non-word characters in key to underscores
+        key.gsub!(/\W/,'_')
+
+        # Add it to destination_hash!
+        destination_hash[key] = value
+      else
+        # It's a danbooru tag.
+        danbooru_tags |= [item]
+      end
+    end
+
+    # Add danbooru_tags to destination_hash!
+    destination_hash['danbooru_tags'] = danbooru_tags.join ' '
+
+    # And return it
+    destination_hash
   end
 
   # Default config options
