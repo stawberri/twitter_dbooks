@@ -377,24 +377,9 @@ class DbooksBot < Ebooks::Bot
   # Listen in on events
   alias_method :dbooks_override_receive_event, :receive_event
   def receive_event(event)
-    # Intercept events about myself to update myself
-    case event
-    when Twitter::Tweet
-      update_user event.user if event.user.id == user.id
-    when Twitter::DirectMessage
-      if event.recipient.id == user.id
-        update_user event.recipient
-      elsif event.sender.id == user.id
-        update_user event.sender
-      end
-    else
-      if event.respond_to? :name
-        if event.source.id == user.id
-          update_user event.source
-        elsif event.target.id == user.id
-          update_user event.target
-        end
-      end
+    # Intercept user_update event
+    if event.is_a?(Twitter::Streaming::Event) && event.name == :user_update
+      update_user event.source
     end
 
     # Call original method
