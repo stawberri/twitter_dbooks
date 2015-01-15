@@ -49,7 +49,7 @@ module Danbooru
   def danbooru_configure
     # Setup default danbooru params with danbooru login info
     @danbooru_default_params = {}
-    unless config.danbooru_login.empty? && config.danbooru_key.empty?
+    if config.danbooru_login && config.danbooru_api_key
       @danbooru_default_params['login'] = config.danbooru_login
       @danbooru_default_params['api_key'] = config.danbooru_api_key
     end
@@ -125,7 +125,7 @@ module Danbooru
         JSON.parse io.read
       end
     rescue => error
-      log "Error while fetching data (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
+      log "Error encountered while loading data (#{error.class.to_s}): #{error.message}\n#{uri}\n#{error.io.read}\n#{error.backtrace.join("\n")}"
       {}
     end
   end
@@ -231,7 +231,7 @@ module Danbooru
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
     rescue => error
-      log "Error while tweeting (#{error.class.to_s}): #{error.message}\n" + error.backtrace.join("\n")
+      log "Error encountered during tweet (#{error.class.to_s}): #{error.message}\n#{error.backtrace.join("\n")}"
       false
     else
       true
@@ -332,7 +332,7 @@ module Biotags
   end
 
   # Default config options
-  CONFIG_DEFAULT = '%every:30m'
+  CONFIG_DEFAULT = '%every:never'
 end
 
 # Main twitterbot class
@@ -377,6 +377,8 @@ class DbooksBot < Ebooks::Bot
     # Intercept user_update event
     if event.is_a?(Twitter::Streaming::Event) && event.name == :user_update
       update_user event.source
+    elsif event.is_a? Array
+      fire(:dbooks_connect)
     end
 
     # Call original method
@@ -384,7 +386,7 @@ class DbooksBot < Ebooks::Bot
   end
 
   # If the tweet timer isn't running at the desired speed, edit it.
-  def manage_tweet_timer(options = {})
+  def manage_tweet_timer
     # Return if everything is fine
     if @tweet_timer
       return if @tweet_timer.original == config.every
@@ -393,25 +395,28 @@ class DbooksBot < Ebooks::Bot
       @tweet_timer.unschedule
     end
 
+    # Create a last time, if it doesn't already exist.
+    @tweet_timer_last_time ||= Time.new 0
+
     begin
       # Repeat this, saving it as a new @tweet_timer
-      @tweet_timer = scheduler.schedule_every config.every, options do
-        # Call myself to check if changes are needed
-        manage_tweet_timer
+      @tweet_timer = scheduler.schedule_every config.every do
+        # Update last time variable
+        @tweet_timer_last_time = Time.now
         danbooru_select_and_tweet_post
       end
+      # Correct when it should happen next
+      @tweet_timer.next_time -= Time.now - @tweet_timer_last_time
     rescue ArgumentError
-      # config.every is invalid!
-      config.every = '30m'
-      # Call myself again now that config.every is fixed.
-      manage_tweet_timer
+      # config.every is invalid, so create a fake timer.
+      @tweet_timer = OpenStruct.new original: config.every, unschedule: true
     end
   end
 
   # When twitter bot starts up
-  def on_startup
-    # Post first tweet instantly.
-    manage_tweet_timer first: :now
+  def on_dbooks_connect
+    # Schedule tweeting
+    manage_tweet_timer
   end
 end
 

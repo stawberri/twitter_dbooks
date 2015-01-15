@@ -18,7 +18,7 @@ Biotag                    | Default | What it does
 `%twitter_token_secret:`  |         | Twitter Access Token Secret
 `%danbooru_login:`        |         | Danbooru Username (optional)
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
-`%every:`                 | `30m`   | Time between tweets
+`%every:`                 | `never` | Time between tweets
 `%no_deleted`             | (false) | Don't tweet deleted posts
 
 There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` tags. Everything else can go into your profile description! You can type anything you want into your bot's bio, but it has to end with your tags! Just type in, `@_dbooks` to let your bot know you're starting to type your tags, and add your tags behind it.
