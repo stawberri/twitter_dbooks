@@ -287,6 +287,11 @@ class DbooksBot < Ebooks::Bot
     @config.danbooru_tags = ENV['DANBOORU_TAGS'].chomp
     @config.tweet_interval = ENV['TWEET_INTERVAL'].chomp
 
+    twitter_configure
+    danbooru_configure
+  end
+
+  def twitter_configure
     # Load configuration into twitter variables
     @consumer_key = config.twitter_key
     @consumer_secret = config.twitter_secret
@@ -295,8 +300,6 @@ class DbooksBot < Ebooks::Bot
 
     # Grab username if all of those variables have been set already
     @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret
-
-    danbooru_configure
   end
 
   # When twitter bot starts up
