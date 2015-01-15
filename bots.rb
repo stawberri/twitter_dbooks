@@ -277,17 +277,26 @@ module Biotags
 
   # Start biotags updating scheduler
   def biotags_schedule
-    # Load all biotags into an OpenStruct in @config
-    scheduler.every '3m', first: :now do
-      config_hash = biotags_env_hash
-      if defined? user
-        # Fetch twitter description and grab its biotags
-        if match_data = user.description.match(/@_dbooks/i)
-          config_hash.merge! biotags_parse match_data.post_match
-        end
-      end
-      @config = OpenStruct.new config_hash
+    # Load all biotags into an OpenStruct in @config. Can't be threaded
+    biotags_load
+    # Schedule it to happen again
+    scheduler.every '3m' do
+      biotags_load
     end
+  end
+
+  # Update @config
+  def biotags_load
+    config_hash = biotags_env_hash
+    if defined? user
+      # Fetch twitter description and grab its biotags
+      if match_data = user.description.match(/@_dbooks/i)
+        config_hash.merge! biotags_parse match_data.post_match
+      end
+    end
+    @config = OpenStruct.new config_hash
+    # Don't return anything
+    nil
   end
 
   # Create a hash populated with defaults and environment variables
@@ -295,8 +304,8 @@ module Biotags
     @biotags_env_hash ||= CONFIG_DEFAULT.merge biotags_parse ENV['DBOOKS']
   end
 
+  # Create a hash from parsing input string
   def biotags_parse(biotag_string)
-
   end
 
   # Default config options
@@ -336,14 +345,21 @@ class DbooksBot < Ebooks::Bot
 
     # Schedule grabbing user data every minute if all details are set
     if @access_token && @access_token_secret && @consumer_key && @consumer_secret
-      # This runs for the first time before all config vars are loaded
-      scheduler.every '3m', first: :now do
-        @user = twitter.user
-
-        # Update username variable
-        @username = user.screen_name
+      # Load user var. must run and complete once right now.
+      update_user_var
+      # Load user in the future too
+      scheduler.every '3m' do
+        update_user_var
       end
     end
+  end
+
+  # Update @user. In a separate function because configure needs it twice
+  def update_user_var
+    @user = twitter.user
+
+    # Update username variable
+    @username = user.screen_name
   end
 
   # When twitter bot starts up
