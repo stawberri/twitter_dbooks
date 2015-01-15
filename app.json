@@ -9,6 +9,8 @@
     "pictures"
   ],
   "env": {
-    "DBOOKS": "Please see GitHub for details"
+    "DBOOKS": {
+      "description": "Your tags go here. Please see GitHub for more details."
+    }
   }
 }
