@@ -267,28 +267,64 @@ module Danbooru
   end
 end
 
+module Biotags
+  # OpenStruct holding config
+  attr_reader :config
+
+  def biotags_configure
+    @config = OpenStruct.new biotags_env_hash
+  end
+
+  # Start biotags updating scheduler
+  def biotags_schedule
+    # Load all biotags into an OpenStruct in @config
+    scheduler.every '3m', first: :now do
+      config_hash = biotags_env_hash
+      if defined? user
+        # Fetch twitter description and grab its biotags
+        if match_data = user.description.match(/@_dbooks/i)
+          config_hash.merge! biotags_parse match_data.post_match
+        end
+      end
+      @config = OpenStruct.new config_hash
+    end
+  end
+
+  # Create a hash populated with defaults and environment variables
+  def biotags_env_hash
+    @biotags_env_hash ||= CONFIG_DEFAULT.merge biotags_parse ENV['DBOOKS']
+  end
+
+  def biotags_parse(biotag_string)
+
+  end
+
+  # Default config options
+  CONFIG_DEFAULT = {
+    every: '30m',
+    deleted: false,
+    _deleted: false
+  }
+end
+
 # Main twitterbot class
 class DbooksBot < Ebooks::Bot
-  include Danbooru
+  include Danbooru, Biotags
 
-  # Config openstruct
-  attr_reader :config
+  # Current user data
+  attr_reader user
 
   # Inital twitterbot setup
   def configure
-    # Load configuration from environment variables
-    @config = OpenStruct.new
-    @config.twitter_key = ENV['TWITTER_KEY'].chomp
-    @config.twitter_secret = ENV['TWITTER_SECRET'].chomp
-    @config.twitter_token = ENV['TWITTER_TOKEN'].chomp
-    @config.twitter_token_secret = ENV['TWITTER_TOKEN_SECRET'].chomp
-    @config.danbooru_login = ENV['DANBOORU_LOGIN'].chomp
-    @config.danbooru_key = ENV['DANBOORU_KEY'].chomp
-    @config.danbooru_tags = ENV['DANBOORU_TAGS'].chomp
-    @config.tweet_interval = ENV['TWEET_INTERVAL'].chomp
+    # Load initial config
+    biotags_configure
 
+    # Perform non-modifiable config functions
     twitter_configure
     danbooru_configure
+
+    # Finalize config
+    biotags_schedule
   end
 
   def twitter_configure
@@ -298,18 +334,22 @@ class DbooksBot < Ebooks::Bot
     @access_token = config.twitter_token
     @access_token_secret = config.twitter_token_secret
 
-    # Grab username if all of those variables have been set already
-    @username = twitter.user.screen_name if @access_token && @access_token_secret && @consumer_key && @consumer_secret
+    # Schedule grabbing user data every minute if all details are set
+    if @access_token && @access_token_secret && @consumer_key && @consumer_secret
+      # This runs for the first time before all config vars are loaded
+      scheduler.every '3m', first: :now do
+        @user = twitter.user
+
+        # Update username variable
+        @username = user.screen_name
+      end
+    end
   end
 
   # When twitter bot starts up
   def on_startup
-    # Tweet a post on startup (in a thread, like scheduler does)
-    Thread.start do
-      danbooru_select_and_tweet_post
-    end
-    # Repeat this every tweet_interval
-    scheduler.every config.tweet_interval do
+    # Repeat this every config.every, but do it once now
+    scheduler.every config.every, first: :now do
       danbooru_select_and_tweet_post
     end
   end
