@@ -24,6 +24,17 @@ module PuddiString
     return self if length <= len
     # It's not, so find out how short we have to trim to.
     real_length = len - cap.length
+
+    # Are we trimming to nothing?
+    if real_length < 1
+      # Does cap fit in remaining length?
+      if cap.length == len
+        return cap
+      else
+        return ''
+      end
+    end
+
     # Now just return the trimmed string!
     self[0...real_length] + cap
   end
@@ -228,9 +239,11 @@ module Danbooru
   def danbooru_select_and_tweet_post
     # Everyone hates catching, but it seems more elegant than a done variable.
     catch :success do
+      # Create variable to hold current page
+      search_page = 0
       loop do
-        # Increment search_page (starting from 1)
-        search_page = search_page.to_i.next
+        # Increment search_page
+        search_page += 1
         # Fetch posts
         posts = danbooru_posts(@config.danbooru_tags, search_page)
         # Just break if we don't have posts
