@@ -400,7 +400,6 @@ class DbooksBot < Ebooks::Bot
         manage_tweet_timer
         danbooru_select_and_tweet_post
       end
-      log @tweet_timer.original
     rescue ArgumentError
       # config.every is invalid!
       config.every = '30m'
