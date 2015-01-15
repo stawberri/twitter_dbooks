@@ -354,9 +354,6 @@ class DbooksBot < Ebooks::Bot
 
     if access_token && access_token_secret && consumer_key && consumer_secret
       update_user
-      scheduler.every '5m' do
-        update_user
-      end
     end
   end
 
