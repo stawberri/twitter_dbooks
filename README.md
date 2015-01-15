@@ -17,5 +17,4 @@ Biotag                  | Default | What it does
 %danbooru_login:        |         | Danbooru Username (optional)
 %danbooru_api_key:      |         | Danbooru API Key (optional)
 %every:                 | 30m     | Time between tweets
-%deleted                | false   | Only deleted posts
-%-deleted               | false   | Only non-deleted posts
+%no_deleted             | false   | Don't tweet deleted posts

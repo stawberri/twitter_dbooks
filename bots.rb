@@ -51,7 +51,7 @@ module Danbooru
     @danbooru_default_params = {}
     unless config.danbooru_login.empty? && config.danbooru_key.empty?
       @danbooru_default_params['login'] = config.danbooru_login
-      @danbooru_default_params['api_key'] = config.danbooru_key
+      @danbooru_default_params['api_key'] = config.danbooru_api_key
     end
 
     # Populate history
@@ -131,8 +131,8 @@ module Danbooru
   end
 
   # Fetch posts from danbooru
-  def danbooru_posts(tags = @config.danbooru_tags, page = 1)
-    tags ||= @config.danbooru_tags
+  def danbooru_posts(tags = config.tags, page = 1)
+    tags ||= config.tags
     page ||= 1
 
     danbooru_get 'posts', page: page, limit: 100, tags: tags
@@ -205,6 +205,9 @@ module Danbooru
       post = OpenStruct.new post
     end
 
+    # Is post deleted, and we don't want deleted posts?
+    return false if config.no_deleted && post.is_deleted
+
     # Is post in a format we like?
     return false unless ['jpg','jpeg','png'].include? post.file_ext
 
@@ -245,7 +248,7 @@ module Danbooru
         # Increment search_page
         search_page += 1
         # Fetch posts
-        posts = danbooru_posts(@config.danbooru_tags, search_page)
+        posts = danbooru_posts(config.tags, search_page)
         # Just break if we don't have posts
         break if posts.empty?
         # Now loop down each post, attempting to post it.
@@ -268,90 +271,68 @@ module Danbooru
 end
 
 module Biotags
-  # OpenStruct holding config
-  attr_reader :config
-
-  def biotags_configure
-    @config = OpenStruct.new biotags_env_hash
-  end
-
-  # Start biotags updating scheduler
-  def biotags_schedule
-    # Load all biotags into an OpenStruct in @config. Can't be threaded
-    biotags_load
-    # Schedule it to happen again
-    scheduler.every '3m' do
-      biotags_load
-    end
-  end
-
   # Update @config
-  def biotags_load
-    config_hash = biotags_env_hash
-    if defined? user
-      # Fetch twitter description and grab its biotags
-      if match_data = user.description.match(/@_dbooks/i)
-        config_hash.merge! biotags_parse(match_data.post_match, config_hash['danbooru_tags'])
-      end
+  def biotags_update
+    # Fetch twitter description and grab its biotags
+    if match_data = user.description.match(/@_dbooks/i)
+      config match_data.post_match
     end
-    @config = OpenStruct.new config_hash
-    # Don't return anything
-    nil
   end
 
-  # Create a hash populated with defaults and environment variables
-  def biotags_env_hash
-    @biotags_env_hash ||= CONFIG_DEFAULT.merge biotags_parse ENV['DBOOKS']
-  end
+  # Create an OpenStruct from parsing input string, if one is given
+  def config(biotag_string = nil)
+    # Return config if no string is given, or if string is identical to last one.
+    # If config isn't defined, re-call this method with an empty string.
+    return @config || config('') unless biotag_string.is_a? String
+    return @config if biotag_string == @biotag_string_previous
 
-  # Create a hash from parsing input string
-  def biotags_parse(biotag_string, danbooru_tags = [])
-    danbooru_tags = [] unless danbooru_tags.is_a? Array
+    # Save string for comparison next time
+    @biotag_string_previous = biotag_string
+    # Create new @config
+    @config = OpenStruct.new
+    # Create a tags array to hold tags for now
+    tags_array = []
 
-    # Create destination hash
-    destination_hash = {}
-
-    # Create an array of tags.
-    biotag_array = biotag_string.split ' '
-
-    # Iterate through them
-    biotag_array.each do |item|
+    # Prepend default and env var variables, then iterate through them
+    "#{CONFIG_DEFAULT} #{ENV['DBOOKS']} #{biotag_string}".split(' ').each do |item|
       # Is it a biotag?
       if item.start_with? '%'
-        # It is. Get some variables.
+        # It is. Remove identifier
         item = item[1..-1]
-        if match_data = item.match(/:/)
-          key = match_data.pre_match
-          value = match_data.post_match
-        else
-          key = item
-          value = true
-        end
+      else
+        # It isn't. Make it one.
+        item = "tags:#{item}"
+      end
 
+      # Is it a key/value?
+      if match_data = item.match(/:/)
+        key = match_data.pre_match
+        value = match_data.post_match
+      else
+        key = item
+        value = true
+      end
+
+      # Add it to @config!
+      if key == 'tags'
+        tags_array |= [value]
+      else
         # Convert all non-word characters in key to underscores
         key.gsub!(/\W/,'_')
 
-        # Add it to destination_hash!
-        destination_hash[key] = value
-      else
-        # It's a danbooru tag.
-        danbooru_tags |= [item]
+        @config[key] = value
       end
     end
 
-    # Add danbooru_tags to destination_hash!
-    destination_hash['danbooru_tags'] = danbooru_tags.join ' '
+    # Move tags_array into @config
+    @config.tags = tags_array.join(' ')
 
-    # And return it
-    destination_hash
+    # Done!
+    @config
   end
 
   # Default config options
-  CONFIG_DEFAULT = {
-    every: '30m',
-    deleted: false,
-    _deleted: false
-  }
+  CONFIG_DEFAULT = '%every:30m'
 end
 
 # Main twitterbot class
@@ -359,53 +340,97 @@ class DbooksBot < Ebooks::Bot
   include Danbooru, Biotags
 
   # Current user data
-  attr_reader user
+  attr_reader :user
 
   # Inital twitterbot setup
   def configure
-    # Load initial config
-    biotags_configure
-
-    # Perform non-modifiable config functions
-    twitter_configure
-    danbooru_configure
-
-    # Finalize config
-    biotags_schedule
-  end
-
-  def twitter_configure
     # Load configuration into twitter variables
     @consumer_key = config.twitter_key
     @consumer_secret = config.twitter_secret
     @access_token = config.twitter_token
     @access_token_secret = config.twitter_token_secret
 
-    # Schedule grabbing user data every minute if all details are set
-    if @access_token && @access_token_secret && @consumer_key && @consumer_secret
-      # Load user var. must run and complete once right now.
-      update_user_var
-      # Load user in the future too
-      scheduler.every '3m' do
-        update_user_var
+    danbooru_configure
+
+    if access_token && access_token_secret && consumer_key && consumer_secret
+      update_user
+      scheduler.every '5m' do
+        update_user
       end
     end
   end
 
   # Update @user. In a separate function because configure needs it twice
-  def update_user_var
-    @user = twitter.user
+  def update_user(current_user = twitter.user)
+    current_user = twitter.user unless current_user.is_a? Twitter::User
+    @user = current_user
 
-    # Update username variable
+    # Update username
     @username = user.screen_name
+    # Update config
+    biotags_update
+
+    # Update tweet timer
+    manage_tweet_timer if @tweet_timer
+  end
+
+  # Listen in on events
+  alias_method :dbooks_override_receive_event, :receive_event
+  def receive_event(event)
+    # Intercept events about myself to update myself
+    case event
+    when Twitter::Tweet
+      update_user event.user if event.user.id == user.id
+    when Twitter::DirectMessage
+      if event.recipient.id == user.id
+        update_user event.recipient
+      elsif event.sender.id == user.id
+        update_user event.sender
+      end
+    else
+      if event.respond_to? :name
+        if event.source.id == user.id
+          update_user event.source
+        elsif event.target.id == user.id
+          update_user event.target
+        end
+      end
+    end
+
+    # Call original method
+    dbooks_override_receive_event event
+  end
+
+  # If the tweet timer isn't running at the desired speed, edit it.
+  def manage_tweet_timer(options = {})
+    # Return if everything is fine
+    if @tweet_timer
+      return if @tweet_timer.original == config.every
+
+      # Delete old @tweet_timer
+      @tweet_timer.unschedule
+    end
+
+    begin
+      # Repeat this, saving it as a new @tweet_timer
+      @tweet_timer = scheduler.schedule_every config.every, options do
+        # Call myself to check if changes are needed
+        manage_tweet_timer
+        danbooru_select_and_tweet_post
+      end
+      log @tweet_timer.original
+    rescue ArgumentError
+      # config.every is invalid!
+      config.every = '30m'
+      # Call myself again now that config.every is fixed.
+      manage_tweet_timer
+    end
   end
 
   # When twitter bot starts up
   def on_startup
-    # Repeat this every config.every, but do it once now
-    scheduler.every config.every, first: :now do
-      danbooru_select_and_tweet_post
-    end
+    # Post first tweet instantly.
+    manage_tweet_timer first: :now
   end
 end
 
