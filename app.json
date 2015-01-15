@@ -9,34 +9,6 @@
     "pictures"
   ],
   "env": {
-    "TWITTER_KEY": {
-      "description": "Twitter Consumer Key"
-    },
-    "TWITTER_SECRET": {
-      "description": "Twitter Consumer Secret"
-    },
-    "TWITTER_TOKEN": {
-      "description": "Twitter Access Token"
-    },
-    "TWITTER_TOKEN_SECRET": {
-      "description": "Twitter Access Token Secret"
-    },
-    "DANBOORU_LOGIN": {
-      "description": "Danbooru Username (optional)",
-      "required": false
-    },
-    "DANBOORU_KEY": {
-      "description": "Danbooru API Key (optional)",
-      "required": false
-    },
-    "DANBOORU_TAGS": {
-      "description": "Search Tags (optional)",
-      "value": "*",
-      "required": false
-    },
-    "TWEET_INTERVAL": {
-      "description": "Time Between Tweets",
-      "value": "30m"
-    }
+    "DBOOKS": "Please see GitHub for details"
   }
 }
