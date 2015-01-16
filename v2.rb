@@ -1,4 +1,4 @@
-DBOOKS_VERSION = 'twitter_dbooks v2.0.0-exitcode'
+DBOOKS_VERSION = 'twitter_dbooks v2.0.0-streampic'
 
 require 'ostruct'
 require 'open-uri'
