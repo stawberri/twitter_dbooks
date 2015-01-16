@@ -1,3 +1,13 @@
+STDOUT.print <<-PUDDIDOC
+
+ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+ ♥ Tagging Along                          ♥
+ ♥                  twitter_dbooks v2.0.0 ♥
+  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+
+PUDDIDOC
+STDOUT.flush
+
 require 'twitter_ebooks'
 require 'ostruct'
 require 'open-uri'

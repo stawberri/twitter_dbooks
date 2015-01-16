@@ -1,4 +1,4 @@
-# twitter_dbooks v2.0.0: Tagging Along
+# twitter_dbooks v2: Tagging Along
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 

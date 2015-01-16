@@ -5,45 +5,45 @@ DESTINATION_FILE = 'bots.rb'
 SOURCE_FILE = 'v2.rb'
 DOWNLOAD_URI = 'https://raw.githubusercontent.com/Stawberri/twitter_dbooks/biotags/v2.rb'
 START_COMMAND = 'ebooks start'
-GENERATED_FILE_HEADER = <<-PUDDIDOC.gsub(/^ {2}/, '')
-  # ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
-  # ♥ DON'T EDIT THIS FILE!                  ♥
-  # ♥                                        ♥
-  # ♥ Changes to this file will be           ♥
-  # ♥ overwritten every time your @_dbooks   ♥
-  # ♥ is restarted.                          ♥
-  # ♥                                        ♥
-  # ♥ Instead, please edit v2.rb and disable ♥
-  # ♥ updates by changing one of your        ♥
-  # ♥ environment variables:                 ♥
-  # ♥                                        ♥
-  # ♥   NO_DOWNLOAD=true                     ♥
-  # ♥                                        ♥
-  # ♥              ~ Pudding (@stawbewwi)    ♥
-  #  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+GENERATED_FILE_HEADER = <<-PUDDIDOC
+#   ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+#  ♥ DON'T EDIT THIS FILE!                  ♥
+#  ♥                                        ♥
+#  ♥ Changes to this file will be           ♥
+#  ♥ overwritten every time your @_dbooks   ♥
+#  ♥ is restarted.                          ♥
+#  ♥                                        ♥
+#  ♥ Instead, please edit v2.rb and disable ♥
+#  ♥ updates by changing one of your        ♥
+#  ♥ environment variables:                 ♥
+#  ♥                                        ♥
+#  ♥   NO_DOWNLOAD=true                     ♥
+#  ♥                                        ♥
+#  ♥              ~ Pudding (@stawbewwi)    ♥
+#  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
-NO_DOWNLOAD_MESSAGE = <<-PUDDIDOC.gsub(/^ {2}/, '')
+NO_DOWNLOAD_MESSAGE = <<-PUDDIDOC
 
-   ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
-   ♥ WARNING: Couldn't load copy of bots.rb ♥
-   ♥          from GitHub. Attempting to    ♥
-   ♥          run out-of-date backup copy   ♥
-   ♥          of @_dbooks. Error message:   ♥
-   ♥                                        ♥
-   ♥            ♦ERROR♦
-   ♥                                        ♥
-   ♥          Unless this was intensional,  ♥
-   ♥          please update manually to fix ♥
-   ♥          this issue as soon as you     ♥
-   ♥          can. You can also try         ♥
-   ♥          checking Twitter to see if I  ♥
-   ♥          have any news about what's    ♥
-   ♥          what's going on, or ask me    ♥
-   ♥          for help there.               ♥
-   ♥                                        ♥
-   ♥              ~ Pudding (@stawbewwi)    ♥
-    ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+ ♥ WARNING: Couldn't load copy of bots.rb ♥
+ ♥          from GitHub. Attempting to    ♥
+ ♥          run out-of-date backup copy   ♥
+ ♥          of @_dbooks. Error message:   ♥
+ ♥                                        ♥
+ ♥            ♦ERROR♦
+ ♥                                        ♥
+ ♥          Unless this was intensional,  ♥
+ ♥          please update manually to fix ♥
+ ♥          this issue as soon as you     ♥
+ ♥          can. You can also try         ♥
+ ♥          checking Twitter to see if I  ♥
+ ♥          have any news about what's    ♥
+ ♥          what's going on, or ask me    ♥
+ ♥          for help there.               ♥
+ ♥                                        ♥
+ ♥              ~ Pudding (@stawbewwi)    ♥
+ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
 NO_DOWNLOAD_MESSAGE_ERROR = /♦ERROR♦/
