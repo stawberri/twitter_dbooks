@@ -255,7 +255,9 @@ module Danbooru
   end
 
   # Pick and tweet a post based on tag settings.
-  def danbooru_select_and_tweet_post
+  def danbooru_select_and_tweet_post(tag_string = config.tags)
+    tag_string ||= config.tags
+
     # Everyone hates catching, but it seems more elegant than a done variable.
     catch :success do
       # Create variable to hold current page
@@ -264,7 +266,7 @@ module Danbooru
         # Increment search_page
         search_page += 1
         # Fetch posts
-        posts = danbooru_posts(config.tags, search_page)
+        posts = danbooru_posts(tag_string, search_page)
         # Just break if we don't have posts
         break if posts.empty?
         # Now loop down each post, attempting to post it.
@@ -387,8 +389,30 @@ class DbooksBot < Ebooks::Bot
     # Update config
     biotags_update
 
+    # Get owner object
+    manage_owner_object
     # Update tweet timer
     manage_tweet_timer if @tweet_timer
+  end
+
+  def manage_owner_object
+    if owner_variable = config.owner
+      # Is config.owner an integer?
+      if owner_variable =~ /\A\d+\z/
+        # Convert to integer
+        owner_variable = owner_variable.to_i
+        # Return if owner is still the same.
+        return if owner_variable == @owner_user.id
+      else
+        # Remove leading @ if there is one
+        owner_variable.gsub!(/\A@/, '')
+        # Return if owner is still the same.
+        return if owner_variable.downcase == @owner_user.screen_name.downcase
+      end
+      @owner_user = twitter.user owner_variable
+    else
+      @owner_user = nil
+    end
   end
 
   # Listen in on events
@@ -437,6 +461,14 @@ class DbooksBot < Ebooks::Bot
   def on_dbooks_connect
     # Schedule tweeting
     manage_tweet_timer
+  end
+
+  def on_message(dm)
+    # Was this dm sent by the owner?
+    if dm.sender.id == @owner_user.id
+      # Treat dm like a tag string.
+      danbooru_select_and_tweet_post dm.text
+    end
   end
 end
 
