@@ -1,1 +1,1 @@
-worker: bundle exec ruby dbooks.rb
+worker: bundle exec ruby updater.rb
