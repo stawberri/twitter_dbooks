@@ -2,7 +2,8 @@ STDOUT.print <<-PUDDIDOC
 
  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
  ♥ Tagging Along                          ♥
- ♥                  twitter_dbooks v2.0.0 ♥
+ ♥                                        ♥
+ ♥              twitter_dbooks v2.0.0-dev ♥
   ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
