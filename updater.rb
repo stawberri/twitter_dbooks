@@ -46,6 +46,7 @@ NO_DOWNLOAD_MESSAGE = <<-PUDDIDOC.gsub(/^ {2}/, '')
     ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
+NO_DOWNLOAD_MESSAGE_ERROR = /♦ERROR♦/
 
 loop do
   begin
@@ -60,7 +61,7 @@ loop do
       end
     end
   rescue => error
-    STDOUT.print NO_DOWNLOAD_MESSAGE.gsub(/♦ERROR♦/, "#{error.class}: #{error.message}")
+    STDOUT.print NO_DOWNLOAD_MESSAGE.gsub(NO_DOWNLOAD_MESSAGE_ERROR, "#{error.class}: #{error.message}")
     STDOUT.flush
     File.open DESTINATION_FILE, 'w' do |destination|
       File.open SOURCE_FILE, 'r' do |source|
