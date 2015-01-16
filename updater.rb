@@ -1,6 +1,6 @@
 NO_DOWNLOAD_ENV = 'NO_DOWNLOAD'
 NO_DOWNLOAD_VALUE = 'true'
-NO_DOWNLOAD_ERROR_MESSAGE = 'ENV Override  ♥'
+NO_DOWNLOAD_ERROR_MESSAGE = 'Manual Override    ♥'
 DESTINATION_FILE = 'bots.rb'
 SOURCE_FILE = 'v2.rb'
 DOWNLOAD_URI = 'https://raw.githubusercontent.com/Stawberri/twitter_dbooks/biotags/v2.rb'
@@ -13,10 +13,11 @@ GENERATED_FILE_HEADER = <<-PUDDIDOC.gsub(/^ {2}/, '')
   # ♥ overwritten every time your @_dbooks   ♥
   # ♥ is restarted.                          ♥
   # ♥                                        ♥
-  # ♥ Instead, please edit bots_dev.rb and   ♥
-  # ♥ set an ENV variable:                   ♥
+  # ♥ Instead, please edit v2.rb and disable ♥
+  # ♥ updates by changing one of your        ♥
+  # ♥ environment variables:                 ♥
   # ♥                                        ♥
-  # ♥   #{NO_DOWNLOAD_ENV}=#{NO_DOWNLOAD_VALUE}
+  # ♥   NO_DOWNLOAD=true                     ♥
   # ♥                                        ♥
   # ♥              ~ Pudding (@stawbewwi)    ♥
   #  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
@@ -28,8 +29,7 @@ NO_DOWNLOAD_MESSAGE = <<-PUDDIDOC.gsub(/^ {2}/, '')
    ♥ WARNING: Couldn't load copy of bots.rb ♥
    ♥          from GitHub. Attempting to    ♥
    ♥          run out-of-date backup copy   ♥
-   ♥          of @_dbooks from whenever you ♥
-   ♥          installed this bot. Error:    ♥
+   ♥          of @_dbooks. Error message:   ♥
    ♥                                        ♥
    ♥            ♦ERROR♦
    ♥                                        ♥
@@ -41,6 +41,7 @@ NO_DOWNLOAD_MESSAGE = <<-PUDDIDOC.gsub(/^ {2}/, '')
    ♥          have any news about what's    ♥
    ♥          what's going on, or ask me    ♥
    ♥          for help there.               ♥
+   ♥                                        ♥
    ♥              ~ Pudding (@stawbewwi)    ♥
     ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
@@ -48,7 +49,7 @@ PUDDIDOC
 
 loop do
   begin
-    raise NO_DOWNLOAD_ERROR_MESSAGE if ENV[NO_DOWNLOAD_ENV] == NO_DOWNLOAD_VALUE
+    raise IOError, NO_DOWNLOAD_ERROR_MESSAGE if ENV[NO_DOWNLOAD_ENV] == NO_DOWNLOAD_VALUE
     require 'open-uri'
     File.open DESTINATION_FILE, 'w' do |destination|
       open DOWNLOAD_URI do |source|
