@@ -1,4 +1,4 @@
-DBOOKS_VERSION = 'twitter_dbooks v2.0.0-uperrordm'
+DBOOKS_VERSION = '_dbooks v2.0.0-uperrordm'
 
 require 'ostruct'
 require 'open-uri'
