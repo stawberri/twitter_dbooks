@@ -10,7 +10,9 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot t
 
 All bot configuration is now done through tags. For more information about how tags work, Danbooru's wiki has [a nice page about it](http://danbooru.donmai.us/wiki_pages/43049). Danbooru tags obviously aren't enough to configure your bot, though, so I extended them with my own tags! They all start with `%`, and pretty much work just like Danbooru's tags. Tags that have a `:` in them start with a name, and then let you type some kinda value behind them, and tags that don't have a `:` are optional, and only have an effect when you include them. For example, if you include `%no_deleted` in your tags, your bot won't tweet deleted posts anymore, but it will if you leave it out!
 
-Biotag                    | Default | What it does
+All tags that start with `%` don't count toward your Danbooru tag limit.
+
+_dbooks Tags              | Default | What it does
 --------------------------|---------|---------------
 `%twitter_key:`           |         | Twitter Consumer Key
 `%twitter_secret:`        |         | Twitter Consumer Secret

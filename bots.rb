@@ -124,8 +124,24 @@ module Danbooru
       open uri do |io|
         JSON.parse io.read
       end
-    rescue => error
-      log "Error encountered while loading data (#{error.class.to_s}): #{error.message}\n#{uri}\n#{error.io.read}\n#{error.backtrace.join("\n")}"
+    rescue OpenURI::HTTPError => error
+      error_message = "#{error.message} - #{uri}\n\t"
+      body = error.io.read
+      begin
+        data = JSON.parse body
+        if data.has_key?('message')
+          error_message << "#{data['message']}\n"
+        else
+          # This is a bit of a cheating way to get the rescue statment down there to run.
+          raise JSON::ParserError
+        end
+      rescue JSON::ParserError
+        error_message << body.gsub(/\n\t?/, "\n\t")
+      end
+      log "#{error_message}\n\t#{error.backtrace.join("\n\t")}"
+      {}
+    rescue JSON::ParserError => error
+      log "#{error.class.to_s}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       {}
     end
   end
@@ -230,8 +246,8 @@ module Danbooru
     log "Tweeting post #{post.id}, rating: #{post.rating}"
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
-    rescue => error
-      log "Error encountered during tweet (#{error.class.to_s}): #{error.message}\n#{error.backtrace.join("\n")}"
+    rescue Twitter::Error => error
+      log "#{error.class.to_s}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       false
     else
       true
@@ -414,7 +430,8 @@ class DbooksBot < Ebooks::Bot
   end
 
   # When twitter bot starts up
-  def on_dbooks_connect
+  # def on_dbooks_connect
+  def on_startup
     # Schedule tweeting
     manage_tweet_timer
   end
