@@ -419,7 +419,10 @@ class DbooksBot < Ebooks::Bot
         return if @owner_user.is_a?(Twitter::User) && owner_variable.downcase == @owner_user.screen_name.downcase
       end
       begin
+        # Save owner
         @owner_user = twitter.user owner_variable
+        # Follow them too
+        follow(@owner_user.screen_name)
       rescue Twitter::Error::NotFound
         # Owner not found
         @owner_user = nil
@@ -479,8 +482,9 @@ class DbooksBot < Ebooks::Bot
     manage_tweet_timer
   end
 
+  # When receiving a dm
   def on_message(dm)
-    # Was this dm sent by the owner?
+    # Was this dm sent by owner?
     if @owner_user.is_a?(Twitter::User) && dm.sender.id == @owner_user.id
       # Find out if dm.text contains @_dbooks
       if match = dm.text.match(/@_dbooks/i)
@@ -527,8 +531,10 @@ ENV['DBOOKS'].split(',').each do |tags|
   DbooksBot.new tags
 end
 
-
+#####################################################################
 # tweetpic.rb
+#####################################################################
+
 # encoding: utf-8
 require 'rufus/scheduler'
 require 'open-uri'
