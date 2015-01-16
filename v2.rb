@@ -1,4 +1,4 @@
-DBOOKS_VERSION = 'twitter_dbooks v2.0.0-streampic'
+DBOOKS_VERSION = 'twitter_dbooks v2.0.0-uperrordm'
 
 require 'ostruct'
 require 'open-uri'
@@ -495,6 +495,10 @@ class DbooksBot < Ebooks::Bot
         follow(@owner_user.screen_name)
         # Say hello
         dm_owner "Running #{DBOOKS_VERSION}"
+        # Warn about out-of-date-ness
+        unless ENV['UPDATER_ERROR'].empty?
+          dm_owner "WARNING: Updater encountered an error. Check log for details, or ask @stawbewwi for help."
+        end
       rescue Twitter::Error::NotFound
         # Owner not found
         @owner_user = nil
@@ -562,6 +566,7 @@ class DbooksBot < Ebooks::Bot
 
   def dm_owner(text, *args)
     log "> #{text}"
+    text = text[0...140]
     twitter.create_direct_message @owner_user, text, *args if @owner_user.is_a? Twitter::User
   rescue Twitter::Error
   end
@@ -583,6 +588,11 @@ class DbooksBot < Ebooks::Bot
         # Uptime request?
         if dm_data.uptime
           dm_owner "Connected to Twitter for #{Rufus::Scheduler.to_duration connection_uptime.round}."
+        end
+
+        # Updater error request?
+        if dm_data.updater_error
+          dm_owner ENV['UPDATER_ERROR']
         end
 
         # Parse tags to post
