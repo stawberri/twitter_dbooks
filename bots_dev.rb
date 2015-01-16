@@ -211,7 +211,7 @@ module Danbooru
   end
 
   # Tweet a post with its post data
-  def danbooru_tweet_post(post)
+  def danbooru_tweet_post(post, bypass = false)
     # Make post an OpenStruct
     unless post.is_a? OpenStruct
       post = post[0] if post.is_a? Array
@@ -222,7 +222,7 @@ module Danbooru
     end
 
     # Is post deleted, and we don't want deleted posts?
-    return false if config.no_deleted && post.is_deleted
+    return false if !bypass && config.no_deleted && post.is_deleted
 
     # Is post in a format we like?
     return false unless ['jpg','jpeg','png'].include? post.file_ext
@@ -249,14 +249,15 @@ module Danbooru
     rescue Twitter::Error => error
       log "#{error.class.to_s}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       false
-    else
-      true
     end
   end
 
   # Pick and tweet a post based on tag settings.
   def danbooru_select_and_tweet_post(tag_string = config.tags)
     tag_string ||= config.tags
+
+    # Hold tweeted post in a variable
+    posted_tweet = false
 
     # Everyone hates catching, but it seems more elegant than a done variable.
     catch :success do
@@ -279,12 +280,15 @@ module Danbooru
           danbooru_history_add post.id
 
           # Attempt to tweet post, heading to next one if it didn't work
-          next unless danbooru_tweet_post post
+          next unless posted_tweet = danbooru_tweet_post(post)
           # It worked!
           throw :success
         end
       end
     end
+
+    # This will either return false if nothing tweeted, or a tweet if something did.
+    posted_tweet
   end
 end
 
@@ -306,13 +310,19 @@ module Biotags
 
     # Save string for comparison next time
     @biotag_string_previous = biotag_string
-    # Create new @config
-    @config = OpenStruct.new
+
+    # Parse it.
+    @config = biotags_parse "#{CONFIG_DEFAULT} #{@initialization_config} #{biotag_string}"
+  end
+
+  # Parse a biotag string into a openstruct.
+  def biotags_parse(tag_string)
+    # Create new openstruct
+    ostruct = OpenStruct.new
     # Create a tags array to hold tags for now
     tags_array = []
 
-    # Prepend default and env var variables, then iterate through them
-    "#{CONFIG_DEFAULT} #{@initialization_config} #{biotag_string}".split(' ').each do |item|
+    tag_string.split(' ').each do |item|
       # Is it a biotag?
       if item.start_with? '%'
         # It is. Remove identifier
@@ -331,22 +341,21 @@ module Biotags
         value = true
       end
 
-      # Add it to @config!
+      # Add it to ostruct!
       if key == 'tags'
         tags_array |= [value]
       else
         # Convert all non-word characters in key to underscores
         key.gsub!(/\W/,'_')
 
-        @config[key] = value
+        ostruct[key] = value
       end
     end
 
-    # Move tags_array into @config
-    @config.tags = tags_array.join(' ')
+    # Move tags_array into ostruct
+    ostruct.tags = tags_array.join(' ')
 
-    # Done!
-    @config
+    ostruct
   end
 
   # Default config options
@@ -402,14 +411,19 @@ class DbooksBot < Ebooks::Bot
         # Convert to integer
         owner_variable = owner_variable.to_i
         # Return if owner is still the same.
-        return if owner_variable == @owner_user.id
+        return if @owner_user.is_a?(Twitter::User) && owner_variable == @owner_user.id
       else
         # Remove leading @ if there is one
         owner_variable.gsub!(/\A@/, '')
         # Return if owner is still the same.
-        return if owner_variable.downcase == @owner_user.screen_name.downcase
+        return if @owner_user.is_a?(Twitter::User) && owner_variable.downcase == @owner_user.screen_name.downcase
       end
-      @owner_user = twitter.user owner_variable
+      begin
+        @owner_user = twitter.user owner_variable
+      rescue Twitter::Error::NotFound
+        # Owner not found
+        @owner_user = nil
+      end
     else
       @owner_user = nil
     end
@@ -465,9 +479,24 @@ class DbooksBot < Ebooks::Bot
 
   def on_message(dm)
     # Was this dm sent by the owner?
-    if dm.sender.id == @owner_user.id
-      # Treat dm like a tag string.
-      danbooru_select_and_tweet_post dm.text
+    if @owner_user.is_a?(Twitter::User) && dm.sender.id == @owner_user.id
+      # Find out if dm.text contains @_dbooks
+      if match = dm.text.match(/@_dbooks/i)
+        # Parse it
+        dm_data = biotags_parse match.post_match
+        if false
+          # Future functionality goes here.
+        else
+          # Assume this is a post request
+          unless dm_data.tags.empty?
+            # Treat dm like a tag string.
+            posts = danbooru_posts dm_data.tags
+            # Select a random post from first page
+            tweet = danbooru_tweet_post posts.sample, true unless posts.empty?
+            reply dm, tweet.uri.to_s if tweet
+          end
+        end
+      end
     end
   end
 end

@@ -20,7 +20,7 @@ _dbooks Tags              | Default | What it does
 `%twitter_token_secret:`  |         | Twitter Access Token Secret
 `%danbooru_login:`        |         | Danbooru Username (optional)
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
-`%owner:`                 |         | Your user ID or name (optional)
+`%owner:`                 |         | Your user ID number or @name (optional)
 `%every:`                 | `never` | Time between tweets
 `%no_deleted`             | (false) | Don't tweet deleted posts
 
