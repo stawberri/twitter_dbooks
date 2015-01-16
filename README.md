@@ -57,7 +57,7 @@ I still have to get around to rewriting this for v2! For now, you'll just have t
 ## Updates
 
 ### From 2.x.y to 2.x.y
-Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it.
+Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it. Heroku also automatically restarts your apps every day.
 
 ### From 1.x.y to 2.x.y
 You'll have to completely reinstall. Sorry! You should already have all the details you need already, though, so just look for them again (or save them and use them again)! 
