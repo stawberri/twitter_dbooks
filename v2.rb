@@ -1,3 +1,5 @@
+DBOOKS_VERSION = 'twitter_dbooks v2.0.0-exitcode'
+
 require 'ostruct'
 require 'open-uri'
 require 'json'
@@ -33,7 +35,7 @@ version_message = <<-PUDDIDOC
   ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
-DBOOKS_VERSION = version_string = 'twitter_dbooks v2.0.0-dev'
+version_string = DBOOKS_VERSION
 version_string_length = version_string.length
 if version_string_length > 36
   version_string = version_string[0...36]
@@ -602,7 +604,7 @@ class DbooksBot < Ebooks::Bot
           else
             dm_owner 'Restarting all bots associated with this app.'
             # Bypass ebooks start's handler
-            exit!
+            exit! 0
           end
         end
       end
