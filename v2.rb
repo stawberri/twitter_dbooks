@@ -1,18 +1,74 @@
-STDOUT.print <<-PUDDIDOC
+require 'ostruct'
+require 'open-uri'
+require 'json'
+require 'twitter_ebooks'
+
+version_message = <<-PUDDIDOC
 
  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
  ♥ Tagging Along                          ♥
  ♥                                        ♥
- ♥              twitter_dbooks v2.0.0-dev ♥
+ ♥                                      ☻ ♥
+♦
+ ♥                                        ♥
+ ♥ WARNING: Couldn't load copy of bots.rb ♥
+ ♥          from GitHub. Attempting to    ♥
+ ♥          run out-of-date backup copy   ♥
+ ♥          of @_dbooks. Error message:   ♥
+ ♥                                        ♥
+ ♥  ♣                                     ♥
+ ♥  ♠                                     ♥
+ ♥                                        ♥
+ ♥          Unless this was intentional,  ♥
+ ♥          please update manually to fix ♥
+ ♥          this issue as soon as you     ♥
+ ♥          can. You can also try         ♥
+ ♥          checking Twitter to see if I  ♥
+ ♥          have any news about what's    ♥
+ ♥          what's going on, or ask me    ♥
+ ♥          for help there.               ♥
+ ♥                                        ♥
+ ♥              ~ Pudding (@stawbewwi)    ♥
+♦
   ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
 
 PUDDIDOC
+DBOOKS_VERSION = version_string = 'twitter_dbooks v2.0.0-dev'
+version_string_length = version_string.length
+if version_string_length > 36
+  version_string = version_string[0...36]
+  version_string_length = 36
+end
+# Using this for spaces
+version_string_length -= 1
+version_message.gsub!(/ {#{version_string_length}}☻/, version_string)
+if ENV['UPDATER_ERROR'].empty?
+  version_message.gsub!(/♦.*♦\r?\n/m, '')
+else
+  version_message.gsub!(/♦\r?\n/, '')
+  # Parse error string
+  space_match = ENV['UPDATER_ERROR'].match(/ /)
+  error_class = space_match.pre_match
+  error_class_length = error_class.length
+  if error_class_length > 36
+    error_class = error_class[0...36]
+    error_class_length = 36
+  end
+  error_message = space_match.post_match
+  error_message_length = error_message.length
+  if error_message_length > 36
+    error_message = error_message[0...36]
+    error_message_length = 36
+  end
+  # Using these numbers for spaces later.
+  error_class_length -= 1
+  error_message_length -= 1
+  # Splice them in
+  version_message.gsub!(/♣ {#{error_class_length}}/, error_class)
+  version_message.gsub!(/♠ {#{error_message_length}}/, error_message)
+end
+STDOUT.print version_message
 STDOUT.flush
-
-require 'twitter_ebooks'
-require 'ostruct'
-require 'open-uri'
-require 'json'
 
 # Module used to extend string with helper functions
 module PuddiString
@@ -338,7 +394,7 @@ module Biotags
         item = item[1..-1]
       else
         # It isn't. Make it one.
-        item = "tags:#{item}"
+        item = "tag:#{item}"
       end
 
       # Is it a key/value?
@@ -350,13 +406,14 @@ module Biotags
         value = true
       end
 
+      # Downcase and convert all non-word characters in key to underscores
+      key.downcase!
+      key.gsub!(/\W/,'_')
+
       # Add it to ostruct!
-      if key == 'tags'
+      if key =~ /tags?/
         tags_array |= [value]
       else
-        # Convert all non-word characters in key to underscores
-        key.gsub!(/\W/,'_')
-
         ostruct[key] = value
       end
     end
@@ -434,6 +491,8 @@ class DbooksBot < Ebooks::Bot
         @owner_user = twitter.user owner_variable
         # Follow them too
         follow(@owner_user.screen_name)
+        # Say hello
+        dm_owner "Running #{DBOOKS_VERSION}"
       rescue Twitter::Error::NotFound
         # Owner not found
         @owner_user = nil
@@ -487,10 +546,22 @@ class DbooksBot < Ebooks::Bot
 
   # When twitter bot starts up
   def on_dbooks_connect
-    # Record time
-    @connection_established_time = Time.now
+    # Set connection_uptime
+    connection_uptime
     # Schedule tweeting
     manage_tweet_timer
+  end
+
+  # How long has it been since we connected?
+  def connection_uptime
+    @connection_uptime ||= Time.now
+    Time.now - @connection_uptime
+  end
+
+  def dm_owner(text, *args)
+    log "> #{text}"
+    twitter.create_direct_message @owner_user, text, *args if @owner_user.is_a? Twitter::User
+  rescue Twitter::Error
   end
 
   # When receiving a dm
@@ -501,35 +572,37 @@ class DbooksBot < Ebooks::Bot
       if match = dm.text.match(/@_dbooks/i)
         # Parse it
         dm_data = biotags_parse match.post_match
+
+        # Version request?
+        if dm_data.version
+          dm_owner DBOOKS_VERSION
+        end
+
+        # Uptime request?
+        if dm_data.uptime
+          dm_owner "Connected to Twitter for #{Rufus::Scheduler.to_duration connection_uptime.round}."
+        end
+
+        # Parse tags to post
+        unless dm_data.tags.empty?
+          # Treat dm like a tag string.
+          posts = danbooru_posts dm_data.tags
+          # Select a random post from first page
+          tweet = danbooru_tweet_post posts.sample, true unless posts.empty?
+          dm_owner tweet.uri.to_s if tweet
+        end
+
+        # Was a restart requested?
         if dm_data.restart
-          # Find time since connection was established
-          time_elapsed = Time.now - connection_established_time
-
-          # Find minutes and seconds
-          minutes_elapsed = (time_elapsed / 60).floor
-          seconds_elapsed = (time_elapsed - minutes_elapsed*60).round
-
-          # Convert it to a string
-          elapsed_string = ''
-          elapsed_string << "#{minutes_elapsed}m" if minutes_elapsed != 0
-          elapsed_string << "#{seconds_elapsed}s" if seconds_elapsed != 0
-
-          # Check if enough time has passed yet or if focrcing was invoked.
-          if time_elapsed < 60*10 && dm_data.restart != 'force'
-            reply dm, "Restarting not recommended: Bot started #{elapsed_string} ago. Force restart with %restart:force"
+          # Get time elapsed
+          remaining_time = (60*10 - connection_uptime).ceil
+          # Check if enough time has passed yet
+          if remaining_time > 0
+            dm_owner "Restarting too frequently can cause Heroku or Twitter issues. Please try again in #{Rufus::Scheduler.to_duration remaining_time}, or restart manually."
           else
-            reply dm, 'Restarting all bots associated with this app.'
+            dm_owner 'Restarting all bots associated with this app.'
             # Bypass ebooks start's handler
-            exit! 69
-          end
-        else
-          # Assume this is a post request
-          unless dm_data.tags.empty?
-            # Treat dm like a tag string.
-            posts = danbooru_posts dm_data.tags
-            # Select a random post from first page
-            tweet = danbooru_tweet_post posts.sample, true unless posts.empty?
-            reply dm, tweet.uri.to_s if tweet
+            exit!
           end
         end
       end
