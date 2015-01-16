@@ -41,6 +41,14 @@ Here's an example bot that posts pictures of cat-people containing one girl ever
 Hello! I'm an example bot running: @_dbooks cat_ears rating:s %every:9m
 ```
 
+## Multiple bots
+
+You can run multiple bots with the same app! Just create more than one ENV setting string as indicated above, string them all together, separated by commas, and dump them all into DBOOKS.
+
+```
+1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original %twitter_key:SECRETSECRETS2 %twitter_secret:EVENMORESECRET2 %twitter_token:1235-SECRETAGAIN2 %twitter_token_secret:YUPITSSECRET2, %twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3 %twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
+```
+
 ## Installation
 
 I still have to get around to rewriting this for v2! For now, you'll just have to refer to my Configuration section above.

@@ -310,7 +310,7 @@ module Biotags
     tags_array = []
 
     # Prepend default and env var variables, then iterate through them
-    "#{CONFIG_DEFAULT} #{ENV['DBOOKS']} #{biotag_string}".split(' ').each do |item|
+    "#{CONFIG_DEFAULT} #{@initialization_config} #{biotag_string}".split(' ').each do |item|
       # Is it a biotag?
       if item.start_with? '%'
         # It is. Remove identifier
@@ -360,6 +360,10 @@ class DbooksBot < Ebooks::Bot
 
   # Inital twitterbot setup
   def configure
+    # Load username into initialization config variable
+    @initialization_config = @username
+    @username = ''
+
     # Load configuration into twitter variables
     @consumer_key = config.twitter_key
     @consumer_secret = config.twitter_secret
@@ -430,12 +434,13 @@ class DbooksBot < Ebooks::Bot
   end
 
   # When twitter bot starts up
-  # def on_dbooks_connect
-  def on_startup
+  def on_dbooks_connect
     # Schedule tweeting
     manage_tweet_timer
   end
 end
 
-# Make DbooksBot!
-DbooksBot.new ''
+# Separate env variable settings into comma separated biotag strings and make a bot of each!
+ENV['DBOOKS'].split(',').each do |tags|
+  DbooksBot.new tags
+end
