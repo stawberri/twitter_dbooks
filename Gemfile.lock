@@ -9,8 +9,7 @@ GEM
     coderay (1.1.0)
     engtagger (0.2.0)
     equalizer (0.0.9)
-    eventmachine (1.0.4)
-    faraday (0.9.0)
+    faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fast-stemmer (1.0.2)
     gingerice (1.2.2)
@@ -23,7 +22,7 @@ GEM
     http (0.6.3)
       http_parser.rb (~> 0.6.0)
     http_parser.rb (0.6.0)
-    json (1.8.1)
+    json (1.8.2)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
@@ -51,9 +50,8 @@ GEM
       memoizable (~> 0.4.0)
       naught (~> 1.0)
       simple_oauth (~> 0.3.0)
-    twitter_ebooks (3.0.6)
+    twitter_ebooks (3.0.7)
       engtagger
-      eventmachine (~> 1.0.3)
       fast-stemmer
       gingerice
       highscore

@@ -6,6 +6,10 @@
 
 See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot that tweets the most popular images from a day ago.
 
+## Installation
+
+I'm gunnya try to make some kind of installation tutorial eventually, but for now, you should see if you can figure out how to install your bot by reading about @_dbooks's configuration below! It might seem a little daunting, but it's really pretty simple! If you need help, please feel free to [ask me on twitter](http://twitter.com/stawbewwi).
+
 ## Configuration
 
 All bot configuration is now done through tags. For more information about how tags work, Danbooru's wiki has [a nice page about it](http://danbooru.donmai.us/wiki_pages/43049). Danbooru tags obviously aren't enough to configure your bot, though, so I extended them with my own tags! They all start with `%`, and pretty much work just like Danbooru's tags. Tags that have a `:` in them start with a name, and then let you type some kinda value behind them, and tags that don't have a `:` are optional, and only have an effect when you include them. For example, if you include `%no_deleted` in your tags, your bot won't tweet deleted posts anymore, but it will if you leave it out!
@@ -21,14 +25,16 @@ _dbooks Tags              | Default | What it does
 `%danbooru_login:`        |         | Danbooru Username (optional)
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
 `%owner:`                 |         | Your own user ID number or username (optional)
-`%every:`                 | `never` | Time between tweets
+`%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
 `%no_deleted`             | (false) | Don't tweet deleted posts
+
+[rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
 
 Note that there isn't a tag for your bot's username.
 
-There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` tags. Everything else can go into your profile description! You can type anything you want into your bot's bio, but it has to end with your tags! Just type in, `@_dbooks` to let your bot know you're starting to type your tags, and add your tags behind it.
+There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` tags. Everything else can go into your bot's profile description. You can type anything you want into your bot's bio, but it has to end with your tags! Just type in, `@_dbooks` to let your bot know you're starting to type your tags, and add your tags behind it.
 
-Note that aside from your `%twitter_` and `%danbooru_` tags, there's no rule about where your tags have to go! You can put all of your tags inside of your ENV setting and leave `@_dbooks` out of your profile if you wish, but that would make your bot harder to tweak!
+Note that aside from your `%twitter_` and `%danbooru_` tags, there's no rule about where your tags have to go. You can put all of your tags inside of your ENV setting and leave `@_dbooks` out of your profile if you wish, but that would make your bot harder to tweak.
 
 ## Example Configuration
 
@@ -36,7 +42,7 @@ Here's an example bot that posts pictures of cat-people containing one girl ever
 
 **ENV setting**
 ```
-1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET
+%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET 1girl
 ```
 
 **Profile Bio**
@@ -51,10 +57,6 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 ```
 1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1235-SECRETAGAIN2 %twitter_token_secret:YUPITSSECRET2, %twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3 %twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
 ```
-
-## Installation
-
-I still have to get around to rewriting this for v2! For now, you'll just have to refer to my Configuration section above.
 
 ## Updates
 

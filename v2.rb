@@ -96,14 +96,14 @@ module PuddiString
     if real_length < 1
       # Does cap fit in remaining length?
       if cap.length == len
-        return cap
+        return cap.extend PuddiString
       else
-        return ''
+        return ''.extend PuddiString
       end
     end
 
-    # Now just return the trimmed string!
-    self[0...real_length] + cap
+    # Now just return the trimmed string (extended, of course)!
+    (self[0...real_length] + cap).extend PuddiString
   end
 end
 
@@ -514,7 +514,7 @@ class DbooksBot < Ebooks::Bot
         dm_owner "Running #{DBOOKS_VERSION}"
         # Warn about out-of-date status
         unless ENV['UPDATER_ERROR'].empty?
-          dm_owner "WARNING: Updater encountered an error ran a possibly out-of-date version instead. Check log for details, or ask @stawbewwi for help."
+          dm_owner "WARNING: Updater encountered an error and ran a possibly out-of-date version of @_dbooks. Check log for details, or ask @stawbewwi for help."
         end
 
         # This is here to return @owner_user, to match other returns.
@@ -584,9 +584,11 @@ class DbooksBot < Ebooks::Bot
     Time.now - @connection_uptime
   end
 
+  # Send a DM to owner. Will be truncated to 140 characters.
   def dm_owner(text, *args)
+    text.extend PuddiString
     log "> #{text}"
-    text = text[0...140]
+    text = text.trim_ellipsis 140
     twitter.create_direct_message @owner_user, text, *args if @owner_user.is_a? Twitter::User
   rescue Twitter::Error
   end
