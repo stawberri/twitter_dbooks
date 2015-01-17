@@ -625,7 +625,7 @@ class DbooksBot < Ebooks::Bot
         # Was a restart requested?
         if dm_data.restart
           # Get time elapsed
-          remaining_time = (60*10 - connection_uptime).ceil
+          remaining_time = (609 - connection_uptime).ceil
           # Check if enough time has passed yet
           if remaining_time > 0
             dm_owner "Restarting too frequently can cause Heroku or Twitter issues. Please try again in #{Rufus::Scheduler.to_duration remaining_time}, or restart manually."
