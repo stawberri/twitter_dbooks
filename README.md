@@ -43,7 +43,8 @@ Here's an example bot that posts pictures of cat-people containing one girl ever
 
 **ENV setting**
 ```
-%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET
+%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
+%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET
 ```
 
 **Profile Bio**
@@ -82,7 +83,12 @@ To reiterate, config %tags (the ones above) don't work in DMs. You get these ins
 You can run multiple bots with the same app! Just create more than one ENV setting string as indicated above, string them all together, separated by commas, and dump them all into DBOOKS. Note that each bot is completely separate, so even if some of your tags are the same, you'll need to include them for each of your bots.
 
 ```
-1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET %twitter_token:1235-SECRETAGAIN2 %twitter_token_secret:YUPITSSECRET2, %twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3 %twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
+1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
+%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original 
+%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
+%twitter_token:1235-SECRETAGAIN2  %twitter_token_secret:YUPITSSECRET2,
+%twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3
+%twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
 ```
 
 ## Updates
