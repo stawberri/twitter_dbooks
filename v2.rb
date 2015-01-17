@@ -456,7 +456,7 @@ class DbooksBot < Ebooks::Bot
 
   # Update @user. In a separate function because configure needs it twice
   def update_user(current_user = twitter.user)
-    @user = current_user
+    @user = current_user if @user.nil? || current_user.id == @user.id
 
     # Update username
     @username = user.screen_name
