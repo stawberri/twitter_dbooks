@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.0.1'
+DBOOKS_VERSION = '@_dbooks v2.0.2'
 
 require 'ostruct'
 require 'open-uri'
@@ -115,7 +115,7 @@ module Danbooru
   # Initialization for danbooru methods
   def danbooru_configure
     # Setup default danbooru params with danbooru login info
-    @danbooru_default_params = {}
+    @danbooru_default_params ||= {}
     if config.danbooru_login && config.danbooru_api_key
       @danbooru_default_params['login'] = config.danbooru_login
       @danbooru_default_params['api_key'] = config.danbooru_api_key
@@ -163,9 +163,8 @@ module Danbooru
   end
 
   # Wrapper for danbooru requests
-  def danbooru_get(query = 'posts', parameters = {})
-    query ||= posts
-    parameters ||= {}
+  def danbooru_get(query = nil, parameters = {})
+    query ||= 'posts'
 
     # Begin generating a URI
     uri = "https://danbooru.donmai.us/#{query}.json"
@@ -214,9 +213,8 @@ module Danbooru
   end
 
   # Fetch posts from danbooru
-  def danbooru_posts(tags = config.tags, page = 1)
+  def danbooru_posts(tags = nil, page = 1)
     tags ||= config.tags
-    page ||= 1
 
     danbooru_get 'posts', page: page, limit: 100, tags: tags
   end
@@ -321,8 +319,6 @@ module Danbooru
 
   # Pick and tweet a post based on tag settings.
   def danbooru_select_and_tweet_post(tag_string = config.tags)
-    tag_string ||= config.tags
-
     # Hold tweeted post in a variable
     posted_tweet = false
 
@@ -372,7 +368,7 @@ module Biotags
   def config(biotag_string = nil)
     # Return config if no string is given, or if string is identical to last one.
     # If config isn't defined, re-call this method with an empty string.
-    return @config || config('') unless biotag_string.is_a? String
+    return @config || config('') if biotag_string.nil?
     return @config if biotag_string == @biotag_string_previous
 
     # Save string for comparison next time
@@ -460,7 +456,6 @@ class DbooksBot < Ebooks::Bot
 
   # Update @user. In a separate function because configure needs it twice
   def update_user(current_user = twitter.user)
-    current_user = twitter.user unless current_user.is_a? Twitter::User
     @user = current_user
 
     # Update username
