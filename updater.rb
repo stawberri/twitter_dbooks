@@ -6,7 +6,7 @@ NO_DOWNLOAD_ERROR_MESSAGE = "ENV Manual Override #{NO_DOWNLOAD_ENV}=#{NO_DOWNLOA
 ERROR_ENV = 'UPDATER_ERROR'
 DESTINATION_FILE = 'bots.rb'
 SOURCE_FILE = 'v2.rb'
-DOWNLOAD_URI = 'https://raw.githubusercontent.com/Stawberri/twitter_dbooks/biotags/v2.rb'
+DOWNLOAD_URI = 'https://raw.githubusercontent.com/Stawberri/twitter_dbooks/master/v2.rb'
 START_COMMAND = 'ebooks start'
 
 error_message = ''
