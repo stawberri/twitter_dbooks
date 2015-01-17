@@ -4,7 +4,23 @@
 
 @_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, @_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
 
-See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot that tweets the most popular images from a day ago.
+See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
+
+## Contents
+
+<!-- MarkdownTOC autolink=true depth=0 bracket=round -->
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Example Configuration](#example-configuration)
+- [Direct Message Commands](#direct-message-commands)
+- [Multiple bots](#multiple-bots)
+- [Updates](#updates)
+  - [From 2.x.y to 2.x.y](#from-2xy-to-2xy)
+  - [From 1.x.y to 2.x.y](#from-1xy-to-2xy)
+- [Editing](#editing)
+
+<!-- /MarkdownTOC -->
 
 ## Installation
 
@@ -37,7 +53,7 @@ There are two places where you can put your tags: your bot's profile, and your b
 
 Note that aside from your `%twitter_` and `%danbooru_` %tags, there's no rule about where your tags have to go. You can put all of your tags inside of your ENV setting and leave `@_dbooks` out of your profile if you wish, but that would make your bot harder to tweak.
 
-## Example Configuration
+### Example Configuration
 
 Here's an example bot that posts pictures of cat-people containing one girl every nine minutes, without being logged into Danbooru! Note that all of this example's search tags are in its profile, but you can put some into your ENV settings too! You might want to do something like that if you want to ensure that your bot posts only safe (`rating:s`) pictures all the time, forever.
 
@@ -52,7 +68,7 @@ Here's an example bot that posts pictures of cat-people containing one girl ever
 Hello! I'm an example bot running: @_dbooks 1girl cat_ears %every:9m
 ```
 
-## Commands
+## Direct Message Commands
 
 Once you set `%owner:`, you can use direct messages as a simple command-line type thing! Direct message commands work essentially the same way as profile description tags do, but all of the %tags are different now, since instead of changing settings, you'll be running commands! You also pass Danbooru search tags to your bot through DMs, and it'll search for them and immediately tweet an image matching those tags if it could find one!
 
@@ -84,7 +100,7 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 
 ```
 1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
-%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original 
+%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original
 %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
 %twitter_token:1235-SECRETAGAIN2  %twitter_token_secret:YUPITSSECRET2,
 %twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3
@@ -97,7 +113,7 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it. Heroku also automatically restarts your apps every day.
 
 ### From 1.x.y to 2.x.y
-You'll have to completely reinstall. Sorry! You should already have all the details you need already, though, so just look for them again (or save them and use them again)! 
+You'll have to completely reinstall. Sorry! You should already have all the details you need already, though, so just look for them again (or save them and use them again)!
 
 ## Editing
 
