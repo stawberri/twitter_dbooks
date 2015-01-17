@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.0.2'
+DBOOKS_VERSION = '@_dbooks v2.0.3'
 
 require 'ostruct'
 require 'open-uri'
