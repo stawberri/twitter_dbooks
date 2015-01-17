@@ -289,6 +289,9 @@ module Danbooru
     # Is post deleted, and we don't want deleted posts?
     return false if !bypass && config.no_deleted && post.is_deleted
 
+    # Add post to history, since we're planning to either tweet it or never tweet it now.
+    danbooru_history_add post.id
+
     # Is post in a format we like?
     return false unless ['jpg','jpeg','png'].include? post.file_ext
 
@@ -339,8 +342,6 @@ module Danbooru
 
           # Skip this post if it's already in our history
           next if danbooru_history_include? post.id
-          # Add post to history, since we've seen it now
-          danbooru_history_add post.id
 
           # Attempt to tweet post, heading to next one if it didn't work
           next unless posted_tweet = danbooru_tweet_post(post)
