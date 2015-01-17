@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.0.0'
+DBOOKS_VERSION = '@_dbooks v2.0.1'
 
 require 'ostruct'
 require 'open-uri'
@@ -7,32 +7,32 @@ require 'twitter_ebooks'
 
 version_message = <<-PUDDIDOC
 
- ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
- ♥ Tagging Along                          ♥
- ♥                                        ♥
- ♥                                      ☻ ♥
+ & & & & & & & & & & & & & & & & & & & & &
+ & Tagging Along                          &
+ &                                        &
+ &                                      ☻ &
 ♦
- ♥                                        ♥
- ♥ WARNING: Couldn't load copy of bots.rb ♥
- ♥          from GitHub. Attempting to    ♥
- ♥          run potentially out-of-date   ♥
- ♥          backup copy of @_dbooks.      ♥
- ♥                                        ♥
- ♥  ♣                                     ♥
- ♥  ♠                                     ♥
- ♥                                        ♥
- ♥          Unless this was intentional,  ♥
- ♥          please update manually to fix ♥
- ♥          this issue as soon as you     ♥
- ♥          can. You can also try         ♥
- ♥          checking Twitter to see if I  ♥
- ♥          have any news about what's    ♥
- ♥          what's going on, or ask me    ♥
- ♥          for help there.               ♥
- ♥                                        ♥
- ♥              ~ Pudding (@stawbewwi)    ♥
+ &                                        &
+ & WARNING: Couldn't load copy of bots.rb &
+ &          from GitHub. Attempting to    &
+ &          run potentially out-of-date   &
+ &          backup copy of @_dbooks.      &
+ &                                        &
+ &  ♣                                     &
+ &  ♠                                     &
+ &                                        &
+ &          Unless this was intentional,  &
+ &          please update manually to fix &
+ &          this issue as soon as you     &
+ &          can. You can also try         &
+ &          checking Twitter to see if I  &
+ &          have any news about what's    &
+ &          what's going on, or ask me    &
+ &          for help there.               &
+ &                                        &
+ &              ~ Pudding (@stawbewwi)    &
 ♦
-  ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
+  & & & & & & & & & & & & & & & & & & & & &
 
 PUDDIDOC
 version_string = DBOOKS_VERSION
