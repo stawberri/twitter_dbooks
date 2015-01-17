@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '_dbooks v2.0.0-uperrordm'
+DBOOKS_VERSION = '@_dbooks v2.0.0-ownercheck'
 
 require 'ostruct'
 require 'open-uri'
@@ -15,8 +15,8 @@ version_message = <<-PUDDIDOC
  ♥                                        ♥
  ♥ WARNING: Couldn't load copy of bots.rb ♥
  ♥          from GitHub. Attempting to    ♥
- ♥          run out-of-date backup copy   ♥
- ♥          of @_dbooks. Error message:   ♥
+ ♥          run potentially out-of-date   ♥
+ ♥          backup copy of @_dbooks.      ♥
  ♥                                        ♥
  ♥  ♣                                     ♥
  ♥  ♠                                     ♥
@@ -482,23 +482,43 @@ class DbooksBot < Ebooks::Bot
         owner_variable = owner_variable.to_i
         # Return if owner is still the same.
         return if @owner_user.is_a?(Twitter::User) && owner_variable == @owner_user.id
+        # Return if owner is myself
+        if owner_variable == user.id
+          @owner_user = nil
+          return
+        end
       else
         # Remove leading @ if there is one
         owner_variable.gsub!(/\A@/, '')
         # Return if owner is still the same.
         return if @owner_user.is_a?(Twitter::User) && owner_variable.downcase == @owner_user.screen_name.downcase
+        # Return if owner is myself
+        if owner_variable.downcase == username.downcase
+          @owner_user = nil
+          return
+        end
       end
       begin
         # Save owner
         @owner_user = twitter.user owner_variable
-        # Follow them too
+
+        # Ensure owner really isn't bot
+        if @owner_user.id == user.id
+          @owner_user = nil
+          return
+        end
+
+        # Follow them
         follow(@owner_user.screen_name)
         # Say hello
         dm_owner "Running #{DBOOKS_VERSION}"
-        # Warn about out-of-date-ness
+        # Warn about out-of-date status
         unless ENV['UPDATER_ERROR'].empty?
-          dm_owner "WARNING: Updater encountered an error. Check log for details, or ask @stawbewwi for help."
+          dm_owner "WARNING: Updater encountered an error ran a possibly out-of-date version instead. Check log for details, or ask @stawbewwi for help."
         end
+
+        # This is here to return @owner_user, to match other returns.
+        @owner_user
       rescue Twitter::Error::NotFound
         # Owner not found
         @owner_user = nil

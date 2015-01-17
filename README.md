@@ -1,8 +1,8 @@
-# twitter_dbooks v2: Tagging Along
+# @_dbooks v2: Tagging Along
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-twitter_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, twitter_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
+@_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, @_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
 
 See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot that tweets the most popular images from a day ago.
 
@@ -20,9 +20,11 @@ _dbooks Tags              | Default | What it does
 `%twitter_token_secret:`  |         | Twitter Access Token Secret
 `%danbooru_login:`        |         | Danbooru Username (optional)
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
-`%owner:`                 |         | Your user ID number or @name (optional)
+`%owner:`                 |         | Your own user ID number or username (optional)
 `%every:`                 | `never` | Time between tweets
 `%no_deleted`             | (false) | Don't tweet deleted posts
+
+Note that there isn't a tag for your bot's username.
 
 There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` tags. Everything else can go into your profile description! You can type anything you want into your bot's bio, but it has to end with your tags! Just type in, `@_dbooks` to let your bot know you're starting to type your tags, and add your tags behind it.
 
@@ -61,3 +63,17 @@ Updates are installed automatically when your bots restart. Just use set up your
 
 ### From 1.x.y to 2.x.y
 You'll have to completely reinstall. Sorry! You should already have all the details you need already, though, so just look for them again (or save them and use them again)! 
+
+## Editing
+
+Please note that you can't edit `bots.rb` directly, since it gets regenerated every startup. You'll want to edit `v2.rb` instead, and then set your env variable `UPDATER_OFF=true` to disable your updater.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+Thank you for considering [@_dbooks](https://twitter.com/_dbooks)!
+
+:strawberry:
