@@ -1,1 +1,1 @@
-worker: bundle exec ruby updater.rb
+worker: bundle exec ruby urgh.rb
