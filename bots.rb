@@ -45,12 +45,12 @@ end
 # Using this for spaces
 version_string_length -= 1
 version_message.gsub!(/ {#{version_string_length}}☻/, version_string)
-if ENV['UPDATER_ERROR'].empty?
+if ENV['URGH_ERROR'].empty?
   version_message.gsub!(/♦.*♦\r?\n/m, '')
 else
   version_message.gsub!(/♦\r?\n/, '')
   # Parse error string
-  space_match = ENV['UPDATER_ERROR'].match(/ /)
+  space_match = ENV['URGH_ERROR'].match(/ /)
   error_class = space_match.pre_match
   error_class_length = error_class.length
   if error_class_length > 36
@@ -516,7 +516,7 @@ class DbooksBot < Ebooks::Bot
         # Say hello
         dm_owner "Running #{DBOOKS_VERSION}"
         # Warn about out-of-date status
-        unless ENV['UPDATER_ERROR'].empty?
+        unless ENV['URGH_ERROR'].empty?
           dm_owner "WARNING: Updater encountered an error and ran a possibly out-of-date version of @_dbooks. Check log for details, or ask @stawbewwi for help."
         end
 
@@ -616,8 +616,8 @@ class DbooksBot < Ebooks::Bot
         end
 
         # Updater error request?
-        if dm_data.updater_error
-          dm_owner ENV['UPDATER_ERROR']
+        if dm_data.URGH_ERROR
+          dm_owner ENV['URGH_ERROR']
         end
 
         # Parse tags to post

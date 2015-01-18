@@ -1,4 +1,4 @@
-# @_dbooks v2: Tagging Along
+# @_dbooks v3: Urgh, Another Update
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
@@ -16,8 +16,8 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 - [Direct Message Commands](#direct-message-commands)
 - [Multiple bots](#multiple-bots)
 - [Updates](#updates)
-  - [From 2.x.y to 2.x.y](#from-2xy-to-2xy)
-  - [From 1.x.y to 2.x.y](#from-1xy-to-2xy)
+  - [Updating to Minor and Patch Versions](#updating-to-minor-and-patch-versions)
+  - [Between Major Versions (first number updates)](#between-major-versions-first-number-updates)
 - [Editing](#editing)
 
 <!-- /MarkdownTOC -->
@@ -114,15 +114,15 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 
 ## Updates
 
-### From 2.x.y to 2.x.y
-Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it. Heroku also automatically restarts your apps every day.
+### Updating to Minor and Patch Versions
+Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it. Heroku also automatically restarts your apps every day. You don't actually have to do anything, until your bot complains that something went wrong (probably because a major version came out)!
 
-### From 1.x.y to 2.x.y
-You'll have to completely reinstall. Sorry! You should already have all the details you need already, though, so just look for them again (or save them and use them again)!
+### Between Major Versions (first number updates)
+Basically, when @_dbooks's major version changes, that means that something has changed about the code in a way that it can't be updated automatically. You'll have to completely reinstall it, unfortunately! Make sure you copy your old ENV vars to a safe place so that you don't have to recreate them again!
 
 ## Editing
 
-If you decide to edit any files in your own copy of @_dbooks, you'll need to set your env variable `URGH=off` to disable your updater. That's what I do when I edit this.
+If you decide to edit any files in your own copy of @_dbooks, you'll need to set your env variable `URGH=off` to disable your updater. That's what I do!
 
 &nbsp;
 

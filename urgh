@@ -1,10 +1,10 @@
 require 'open-uri'
 require 'tempfile'
 ENVSettingError = Class.new RuntimeError
-env = {}
+env = {'URGH_VERSION' => '3'}
 begin
   raise ENVSettingError, 'environment variable set to URGH=off' if ENV['URGH'] == 'off'
-  env['UPDATER_ERROR'] = ''
+  env['URGH_ERROR'] = ''
   Tempfile.create 'urgh' do |urgh|
     open 'https://github.com/Stawberri/twitter_dbooks/archive/urgh.tar.gz' do |github|
       until github.eof?
@@ -15,6 +15,6 @@ begin
     system "tar -xzf #{urgh.path} --strip-components=1"
   end
 rescue => error
-  env['UPDATER_ERROR'] = "#{error.class}: #{error.message}"
+  env['URGH_ERROR'] = "#{error.class}: #{error.message}"
 end
 system env, 'ruby urgh.rb'
