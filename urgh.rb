@@ -17,4 +17,4 @@ begin
 rescue => error
   env['UPDATER_ERROR'] = "#{error.class}: #{error.message}"
 end
-system env, 'bundle exec ebooks start
+system env, 'bundle exec ebooks start'
