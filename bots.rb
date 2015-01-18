@@ -1,4 +1,5 @@
-DBOOKS_VERSION = '@_dbooks v3.0.2'
+DBOOKS_VERSION = '@_dbooks v3.0.3'
+DBOOKS_VERSION_NAME = 'Urgh, Another Update'
 
 require 'ostruct'
 require 'open-uri'
