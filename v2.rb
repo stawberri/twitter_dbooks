@@ -581,11 +581,11 @@ class DbooksBot < Ebooks::Bot
   end
 
   # Send a DM to owner. Will be truncated to 140 characters.
-  def dm_owner(text, *args)
+  def dm_owner(text, no_log = false)
     text.extend PuddiString
-    log "> #{text}"
+    log "> #{text}" unless no_log
     text = text.trim_ellipsis 140
-    twitter.create_direct_message @owner_user, text, *args if @owner_user.is_a? Twitter::User
+    twitter.create_direct_message @owner_user, text if @owner_user.is_a? Twitter::User
   rescue Twitter::Error
   end
 
