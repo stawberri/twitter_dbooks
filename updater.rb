@@ -9,8 +9,8 @@ SOURCE_FILE = 'v2.rb'
 DOWNLOAD_URI = 'https://raw.githubusercontent.com/Stawberri/twitter_dbooks/master/v2.rb'
 START_COMMAND = 'ebooks start'
 
-error_message = ''
 begin
+  error_message = ''
   raise IOError, NO_DOWNLOAD_ERROR_MESSAGE if ENV[NO_DOWNLOAD_ENV] == NO_DOWNLOAD_VALUE
   File.open DESTINATION_FILE, 'w' do |destination|
     open DOWNLOAD_URI do |source|
@@ -29,4 +29,8 @@ rescue => error
     end
   end
 end
-system({ERROR_ENV => error_message}, START_COMMAND)
+begin
+  system({ERROR_ENV => error_message}, START_COMMAND)
+ensure
+  File.delete DESTINATION_FILE rescue nil
+end
