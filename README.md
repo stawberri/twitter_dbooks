@@ -122,7 +122,7 @@ You'll have to completely reinstall. Sorry! You should already have all the deta
 
 ## Editing
 
-Please note that you can't edit `bots.rb` directly, since it gets regenerated every startup. You'll want to edit `v2.rb` instead, and then set your env variable `UPDATER_OFF=true` to disable your updater.
+If you decide to edit any files in your own copy of @_dbooks, you'll need to set your env variable `URGH=off` to disable your updater. That's what I do when I edit this.
 
 &nbsp;
 

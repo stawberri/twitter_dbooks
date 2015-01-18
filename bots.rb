@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.1.2'
+DBOOKS_VERSION = '@_dbooks v3.0.0'
 
 require 'ostruct'
 require 'open-uri'
@@ -208,11 +208,11 @@ module Danbooru
       rescue JSON::ParserError
         error_message << body.gsub(/\n\t?/, "\n\t")
       end
-      dm_owner "#{error.class} #{error.message}" if config.errors
+      dm_owner "#{error.class}: #{error.message}" if config.errors
       log "#{error_message}\n\t#{error.backtrace.join("\n\t")}"
       {}
     rescue JSON::ParserError => error
-      dm_owner "#{error.class} #{error.message}" if config.errors
+      dm_owner "#{error.class}: #{error.message}" if config.errors
       log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       {}
     end
@@ -321,7 +321,7 @@ module Danbooru
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
     rescue Twitter::Error => error
-      dm_owner "#{error.class} #{error.message}" if config.errors
+      dm_owner "#{error.class}: #{error.message}" if config.errors
       log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       false
     end

@@ -1,9 +1,9 @@
 require 'open-uri'
 require 'tempfile'
-ENVSetting = Class.new RuntimeError
+ENVSettingError = Class.new RuntimeError
 env = {}
 begin
-  raise ENVSetting, 'urgh disabled' if ENV['URGH'] == 'off'
+  raise ENVSettingError, 'environment variable set to URGH=off' if ENV['URGH'] == 'off'
   env['UPDATER_ERROR'] = ''
   Tempfile.create 'urgh' do |urgh|
     open 'https://github.com/Stawberri/twitter_dbooks/archive/urgh.tar.gz' do |github|
