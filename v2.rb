@@ -179,7 +179,7 @@ module Danbooru
       parameters_array = []
       parameters.each do |key, value|
         # Convert key to a string if it's a symbol
-        parameters_array << "#{URI.escape key}=#{URI.escape value}"
+        parameters_array << "#{URI.escape key.to_s}=#{URI.escape value.to_s}"
       end
       # Merge them and add them to uri
       uri += parameters_array.join ';'
