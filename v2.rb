@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.0.4'
+DBOOKS_VERSION = '@_dbooks v2.1.0'
 
 require 'ostruct'
 require 'open-uri'
@@ -179,7 +179,7 @@ module Danbooru
       parameters_array = []
       parameters.each do |key, value|
         # Convert key to a string if it's a symbol
-        parameters_array << "#{URI.escape key.to_s}=#{URI.escape value.to_s}"
+        parameters_array << "#{URI.escape key}=#{URI.escape value}"
       end
       # Merge them and add them to uri
       uri += parameters_array.join ';'
@@ -204,10 +204,12 @@ module Danbooru
       rescue JSON::ParserError
         error_message << body.gsub(/\n\t?/, "\n\t")
       end
+      dm_owner "#{error.class} #{error.message}" if config.errors
       log "#{error_message}\n\t#{error.backtrace.join("\n\t")}"
       {}
     rescue JSON::ParserError => error
-      log "#{error.class.to_s}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
+      dm_owner "#{error.class} #{error.message}" if config.errors
+      log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       {}
     end
   end
@@ -315,7 +317,8 @@ module Danbooru
     begin
       pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
     rescue Twitter::Error => error
-      log "#{error.class.to_s}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
+      dm_owner "#{error.class} #{error.message}" if config.errors
+      log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       false
     end
   end
