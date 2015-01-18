@@ -531,7 +531,7 @@ class DbooksBot < Ebooks::Bot
     if event.is_a?(Twitter::Streaming::Event) && event.name == :user_update
       update_user event.source
     elsif event.is_a? Array
-      fire(:dbooks_connect)
+      fire(:dbooks_connect, event)
     end
 
     # Call original method
@@ -567,7 +567,7 @@ class DbooksBot < Ebooks::Bot
   end
 
   # When twitter bot starts up
-  def on_dbooks_connect
+  def on_dbooks_connect(friend_ids)
     # Set connection_uptime
     connection_uptime
     # Schedule tweeting
