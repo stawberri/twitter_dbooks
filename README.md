@@ -28,11 +28,11 @@ I'm gunnya try to make some kind of installation tutorial eventually, but for no
 
 ## Configuration
 
-All bot configuration is now done through tags. For more information about how tags work, Danbooru's wiki has [a nice page about it](http://danbooru.donmai.us/wiki_pages/43049). Danbooru tags obviously aren't enough to configure your bot, though, so I extended them with my own %tags! They all start with `%`, and pretty much work just like Danbooru's tags. %Tags that have a `:` in them start with a name, and then let you type some kinda value behind them, and %tags that don't have a `:` are optional, and only have an effect when you include them. For example, if you include `%no_deleted` in your tags, your bot won't tweet deleted posts anymore, but it will if you leave it out!
+All bot configuration is now done through tags. For more information about how tags work, Danbooru's wiki has [a nice page about it](http://danbooru.donmai.us/wiki_pages/43049). Danbooru tags obviously aren't enough to configure your bot, though, so I extended them with my own %tags! They all start with `%`, and pretty much work just like Danbooru's tags. There are %metatags that have a `:` in them, and they work in a `%name:value` format, letting you set some setting to some value. Normal %tags don't have a `:` in them, and they either do something or don't, depending on whether or not you include them.
 
 All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 
-%tag                      | Default | What it does
+%metatags                 | Default | What it does
 --------------------------|---------|---------------
 `%twitter_key:`           |         | Twitter Consumer Key
 `%twitter_secret:`        |         | Twitter Consumer Secret
@@ -42,12 +42,17 @@ All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
 `%owner:`                 |         | Your own user ID number or username (optional)
 `%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
-`%no_deleted`             | (false) | Don't tweet deleted posts
-(anything else)           |         | These tags will used to search Danbooru (optional)
+
+Note that there isn't a %tag for your bot's username.
+
+%tags                     | What it does
+--------------------------|--------------
+`%no_deleted`             | Don't tweet deleted posts
+`%errors`                 | Send error logs to owner via DMs (unformatted)
 
 [rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
 
-Note that there isn't a %tag for your bot's username.
+As for configuring what exactly your bot searches Danbooru for to post, just type in your search tags along with your settings tags! And remember that there isn't any particular order you have to put them in. You can have your search tags first, last, or even between your %tags.
 
 There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` %tags. Everything else can go into your bot's profile description. You can type anything you want into your bot's bio, but it has to end with your tags! Just type `@_dbooks` to let your bot know to start reading its own bio, and add your tags behind it.
 
