@@ -13,8 +13,10 @@ begin
     end
     urgh.close
     system "tar -xzf #{urgh.path} --strip-components=1"
+    system env, 'ruby urg/h.rb'
   end
 rescue => error
   env['URGH_ERROR'] = "#{error.class}: #{error.message}"
+  system env, 'ruby urgh.rb'
+  system env, 'ruby urg/h.rb'
 end
-system env, 'ruby urgh.rb'

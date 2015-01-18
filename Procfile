@@ -1,1 +1,1 @@
-worker: bundle exec ruby urgh
+worker: bundle exec ruby urg/h
