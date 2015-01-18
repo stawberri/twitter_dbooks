@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v2.1.1'
+DBOOKS_VERSION = '@_dbooks v2.1.2'
 
 require 'ostruct'
 require 'open-uri'
@@ -137,6 +137,9 @@ module Danbooru
         if match_data = uri.expanded_url.to_s.match(%r //danbooru\.donmai\.us/posts/(?<post_id>\d+) i)
           # If it matches, add it to history
           danbooru_history_add match_data['post_id']
+
+          # If it hasn't been set, set last tweet time to time of this tweet
+          @tweet_timer_last_time ||= tweet.created_at
         end
       end
     end
