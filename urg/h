@@ -17,6 +17,5 @@ begin
   end
 rescue => error
   env['URGH_ERROR'] = "#{error.class}: #{error.message}"
-  system env, 'ruby urgh.rb'
   system env, 'ruby urg/h.rb'
 end

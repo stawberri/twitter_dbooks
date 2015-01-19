@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v3.0.3'
+DBOOKS_VERSION = '@_dbooks v3.0.4'
 DBOOKS_VERSION_NAME = 'Urgh, Another Update'
 
 require 'ostruct'
