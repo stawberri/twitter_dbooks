@@ -1,0 +1,14 @@
+require 'open-uri'
+require 'tempfile'
+FileUtils.rm_f ['app.json', 'Gemfile', 'Gemfile.lock', 'Procfile', 'urgh']
+Tempfile.create 'urgh' do |urgh|
+  open 'https://github.com/Stawberri/twitter_dbooks/archive/master.tar.gz' do |github|
+    until github.eof?
+      urgh.write github.read 1024
+    end
+  end
+  urgh.close
+  system "tar -xzf #{urgh.path} --strip-components=1"
+end
+system 'bundle install --deployment'
+system 'bundle exec ' + File.open('Procfile') { |pf| pf.gets.match(/:/).post_match.strip! }
