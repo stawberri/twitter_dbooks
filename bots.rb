@@ -136,8 +136,7 @@ class DbooksBot < Ebooks::Bot
   end
 
   # When twitter bot starts up
-  #def on_dbooks_connect(friend_ids)
-  def on_startup
+  def on_dbooks_connect(friend_ids)
     # Set connection_uptime
     connection_uptime
     # Schedule tweeting
