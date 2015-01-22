@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.0.2'
+DBOOKS_VERSION = '@_dbooks v4.0.4'
 DBOOKS_VERSION_NAME = 'Death to Manual Updates'
 
 require 'ostruct'
@@ -20,10 +20,6 @@ class DbooksBot < Ebooks::Bot
 
   # Current user data
   attr_reader :user
-  # Time stream was started
-  attr_reader :connection_established_time
-  # Contains time of last tweet
-  attr_reader :last_timed_tweet_time
 
   # Inital twitterbot setup
   def configure
@@ -47,11 +43,10 @@ class DbooksBot < Ebooks::Bot
         # Convert to integer
         owner_variable = owner_variable.to_i
         # Return if owner is still the same.
-        return if @owner_user.is_a?(Twitter::User) && owner_variable == @owner_user.id
+        return @owner_user if @owner_user.is_a?(Twitter::User) && owner_variable == @owner_user.id
         # Return if owner is myself
         if owner_variable == user.id
-          @owner_user = nil
-          return
+          return @owner_user = nil
         end
       else
         # Remove leading @ if there is one
@@ -60,8 +55,7 @@ class DbooksBot < Ebooks::Bot
         return if @owner_user.is_a?(Twitter::User) && owner_variable.downcase == @owner_user.screen_name.downcase
         # Return if owner is myself
         if owner_variable.downcase == username.downcase
-          @owner_user = nil
-          return
+          return @owner_user = nil
         end
       end
       begin
@@ -70,14 +64,14 @@ class DbooksBot < Ebooks::Bot
 
         # Ensure owner really isn't bot
         if @owner_user.id == user.id
-          @owner_user = nil
-          return
+          return @owner_user = nil
         end
 
         # Follow them
-        follow(@owner_user.screen_name)
-        # Say hello
-        dm_owner "Running #{DBOOKS_VERSION}"
+        follow @owner_user.screen_name
+
+        # Send version number
+        dm_version_owner
 
         # This is here to return @owner_user, to match other returns.
         @owner_user
@@ -90,10 +84,28 @@ class DbooksBot < Ebooks::Bot
     end
   end
 
+  # DM version to owner
+  def dm_version_owner(allow_duplicate_messages = false)
+    version_dm = "Running #{DBOOKS_VERSION}: #{DBOOKS_VERSION_NAME}".strip.extend(PuddiString).trim_ellipsis 140
+    return dm_owner version_dm if allow_duplicate_messages
+
+    # Load and iterate through recently sent direct messages
+    twitter.direct_messages_sent(count: 200).each do |msg|
+      if msg.recipient.id == @owner_user.id
+        unless msg.text.strip == version_dm
+          # Say hello
+          dm_owner version_dm
+        end
+        # Found most recent message to owner, so don't continue.
+        break
+      end
+    end
+  end
+
   # Corrects timer
   def update_tweet_timer
     # Modify timer by difference from current time.
-    @tweet_timer.next_time = last_timed_tweet_time + @tweet_timer.frequency if @tweet_timer.is_a? Rufus::Scheduler::Job
+    @tweet_timer.next_time = @last_timed_tweet_time + @tweet_timer.frequency if @tweet_timer.is_a? Rufus::Scheduler::Job
   end
 
   # If the tweet timer isn't running at the desired speed, edit it.
@@ -169,7 +181,7 @@ class DbooksBot < Ebooks::Bot
 
         # Version request?
         if dm_data.version
-          dm_owner DBOOKS_VERSION
+          dm_version_owner true
         end
 
         # Uptime request?
