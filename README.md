@@ -1,4 +1,4 @@
-# @_dbooks: Death to Updates
+# @_dbooks: Death to Manual Updates
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)][heroku_deploy]
 

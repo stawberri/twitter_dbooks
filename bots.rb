@@ -1,5 +1,5 @@
-DBOOKS_VERSION = '@_dbooks v4.0.0'
-DBOOKS_VERSION_NAME = 'Death to Updates'
+DBOOKS_VERSION = '@_dbooks v4.0.1'
+DBOOKS_VERSION_NAME = 'Death to Manual Updates'
 
 require 'ostruct'
 require 'open-uri'
