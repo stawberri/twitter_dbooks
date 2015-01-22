@@ -1,5 +1,5 @@
-DBOOKS_VERSION = '@_dbooks v3.0.4'
-DBOOKS_VERSION_NAME = 'Urgh, Another Update'
+DBOOKS_VERSION = '@_dbooks v4.0.0'
+DBOOKS_VERSION_NAME = 'Death to Updates'
 
 require 'ostruct'
 require 'open-uri'
@@ -76,10 +76,6 @@ class DbooksBot < Ebooks::Bot
         follow(@owner_user.screen_name)
         # Say hello
         dm_owner "Running #{DBOOKS_VERSION}"
-        # Warn about out-of-date status
-        unless ENV['URGH_ERROR'].empty?
-          dm_owner "WARNING: Updater encountered an error and ran a possibly out-of-date version of @_dbooks. Check log for details, or ask @stawbewwi for help."
-        end
 
         # This is here to return @owner_user, to match other returns.
         @owner_user
@@ -171,11 +167,6 @@ class DbooksBot < Ebooks::Bot
         # Uptime request?
         if dm_data.uptime
           dm_owner "Connected to Twitter for #{Rufus::Scheduler.to_duration connection_uptime.round}."
-        end
-
-        # Updater error request?
-        if dm_data.URGH_ERROR
-          dm_owner ENV['URGH_ERROR']
         end
 
         # Parse tags to post

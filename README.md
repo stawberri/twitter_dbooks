@@ -1,6 +1,6 @@
-# @_dbooks v3: Urgh, Another Update
+# @_dbooks: Death to Updates
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)][heroku_deploy]
 
 @_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, @_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
 
@@ -16,15 +16,16 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 - [Direct Message Commands](#direct-message-commands)
 - [Multiple bots](#multiple-bots)
 - [Updates](#updates)
-  - [Updating to Minor and Patch Versions](#updating-to-minor-and-patch-versions)
-  - [Between Major Versions (first number updates)](#between-major-versions-first-number-updates)
-- [Editing](#editing)
 
 <!-- /MarkdownTOC -->
 
 ## Installation
 
-I'm gunnya try to make some kind of installation tutorial eventually, but for now, you should see if you can figure out how to install your bot by reading about @_dbooks's configuration below! It might seem a little daunting, but it's really pretty simple! If you need help, please feel free to [ask me on twitter](http://twitter.com/stawbewwi).
+1. Click [**Deploy** to Heroku][heroku_deploy].
+2. Fill out Heroku's deployment form, referring to [Configuration](#configuration) below for details.
+3. Scale your Heroku worker dyno to 1:1X.
+
+These steps are extremely bare-bones, but I'm gunnya try to make some kind of installation tutorial eventually! It might seem a little daunting, but it's really pretty simple! If you need help, please feel free to [ask me on twitter](http://twitter.com/stawbewwi).
 
 ## Configuration
 
@@ -85,7 +86,6 @@ To reiterate, config %tags (the ones above) don't work in DMs. You get these ins
 --------------------------|-----------------------
 `%version`                | Give you @_dbooks version number
 `%uptime`                 | Tell you how long it has been running for
-`%updater_error`          | Return a string with updater error information, if any
 `%restart`                | Shut down, making Heroku restart your bot for you
 (anything else)           | Run a Danbooru search and tweet a random post instantly
 
@@ -114,15 +114,7 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 
 ## Updates
 
-### Updating to Minor and Patch Versions
-Updates are installed automatically when your bots restart. Just use set up your `%owner` tag and then direct message `@_dbooks %restart` to your bot, or restart it however other way you want to restart it. Heroku also automatically restarts your apps every day. You don't actually have to do anything, until your bot complains that something went wrong (probably because a major version came out)!
-
-### Between Major Versions (first number updates)
-Basically, when @_dbooks's major version changes, that means that something has changed about the code in a way that it can't be updated automatically. You'll have to completely reinstall it, unfortunately! Make sure you copy your old ENV vars to a safe place so that you don't have to recreate them again!
-
-## Editing
-
-If you decide to edit any files in your own copy of @_dbooks, you'll need to set your env variable `URGH=off` to disable your updater. That's what I do!
+If you installed using my [**Deploy** to Heroku button][heroku_deploy], there's nothing you need to do to get updates. They'll get installed automatically when your bot restarts (unless some kind of disaster or unexpected thing happens). If you want to install manually but still get automatic updates, clone and push my [urgh](https://github.com/Stawberri/twitter_dbooks/tree/urgh) branch.
 
 &nbsp;
 
@@ -133,3 +125,5 @@ If you decide to edit any files in your own copy of @_dbooks, you'll need to set
 Thank you for considering [@_dbooks](https://twitter.com/_dbooks)!
 
 :strawberry:
+
+[heroku_deploy]: https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2FStawberri%2Ftwitter_dbooks%2Ftree%2Furgh
