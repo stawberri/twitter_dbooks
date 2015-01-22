@@ -30,10 +30,13 @@ module Danbooru
           danbooru_history_add match_data['post_id']
 
           # If it hasn't been set, set last tweet time to time of this tweet
-          @tweet_timer_last_time ||= tweet.created_at
+          @last_timed_tweet_time ||= tweet.created_at
         end
       end
     end
+
+    # Just to future proof, update tweet timer.
+    update_tweet_timer
   end
 
   # Add a post id to history
@@ -172,7 +175,10 @@ module Danbooru
   end
 
   # Tweet a post with its post data
-  def danbooru_tweet_post(post, bypass = false)
+  def danbooru_tweet_post(post, options = {})
+    options = {bypass_history: false, keep_timer: false}.merge options
+    options = OpenStruct.new options
+
     # Make post an OpenStruct
     unless post.is_a? OpenStruct
       post = post[0] if post.is_a? Array
@@ -183,7 +189,7 @@ module Danbooru
     end
 
     # Is post deleted, and we don't want deleted posts?
-    return false if !bypass && config.no_deleted && post.is_deleted
+    return false if !options.bypass && config.no_deleted && post.is_deleted
 
     # Add post to history, since we're planning to either tweet it or never tweet it now.
     danbooru_history_add post.id
@@ -209,7 +215,15 @@ module Danbooru
     # Tweet post!
     log "Tweeting post #{post.id}, rating: #{post.rating}"
     begin
-      pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
+      tweet_return = pic_tweet("#{post_uri}#{tag_string}", image_uri, possibly_sensitive: sensitive)
+
+      unless options.keep_timer
+        # Update last time variable
+        @last_timed_tweet_time = Time.now
+        update_tweet_timer
+      end
+
+      tweet_return
     rescue Twitter::Error => error
       dm_owner "#{error.class}: #{error.message}" if config.errors
       log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"

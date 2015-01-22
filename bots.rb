@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.0.1'
+DBOOKS_VERSION = '@_dbooks v4.0.2'
 DBOOKS_VERSION_NAME = 'Death to Manual Updates'
 
 require 'ostruct'
@@ -22,6 +22,8 @@ class DbooksBot < Ebooks::Bot
   attr_reader :user
   # Time stream was started
   attr_reader :connection_established_time
+  # Contains time of last tweet
+  attr_reader :last_timed_tweet_time
 
   # Inital twitterbot setup
   def configure
@@ -88,36 +90,42 @@ class DbooksBot < Ebooks::Bot
     end
   end
 
+  # Corrects timer
+  def update_tweet_timer
+    # Modify timer by difference from current time.
+    @tweet_timer.next_time = last_timed_tweet_time + @tweet_timer.frequency if @tweet_timer.is_a? Rufus::Scheduler::Job
+  end
+
   # If the tweet timer isn't running at the desired speed, edit it.
   def manage_tweet_timer
     # Return if everything is fine
     if @tweet_timer
       return if @tweet_timer.original == config.every
 
-      # Delete old @tweet_timer
-      @tweet_timer.unschedule
+      # Delete old @tweet_timer now that we've gotten rid of cases where it already exists
+      @tweet_timer.unschedule if @tweet_timer.is_a? Rufus::Scheduler::Job
     end
-
-    # Create a last time, if it doesn't already exist.
-    @tweet_timer_last_time ||= Time.new 0
 
     begin
       # Repeat this, saving it as a new @tweet_timer
       @tweet_timer = scheduler.schedule_every config.every do
-        # Update last time variable
-        @tweet_timer_last_time = Time.now
         danbooru_select_and_tweet_post
       end
-      # Correct when it should happen next
-      @tweet_timer.next_time -= Time.now - @tweet_timer_last_time
+
+      # Create a last time, if it doesn't already exist.
+      @last_timed_tweet_time ||= Time.new 0
+
+      # Update tweet timer now that we've created it.
+      update_tweet_timer
     rescue ArgumentError
       # config.every is invalid, so create a fake timer.
-      @tweet_timer = OpenStruct.new original: config.every, unschedule: true
+      @tweet_timer = OpenStruct.new original: config.every
     end
   end
 
   # When twitter bot starts up
-  def on_dbooks_connect(friend_ids)
+  #def on_dbooks_connect(friend_ids)
+  def on_startup
     # Set connection_uptime
     connection_uptime
     # Schedule tweeting
@@ -147,7 +155,7 @@ class DbooksBot < Ebooks::Bot
     # Get owner object
     manage_owner_object
     # Update tweet timer
-    manage_tweet_timer if @tweet_timer
+    manage_tweet_timer
   end
 
   # When receiving a dm
@@ -174,7 +182,7 @@ class DbooksBot < Ebooks::Bot
           # Treat dm like a tag string.
           posts = danbooru_posts dm_data.tags
           # Select a random post from first page
-          tweet = danbooru_tweet_post posts.sample, true unless posts.empty?
+          tweet = danbooru_tweet_post posts.sample, bypass_history: true unless posts.empty?
           dm_owner tweet.uri.to_s if tweet
         end
 
