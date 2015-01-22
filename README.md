@@ -114,7 +114,7 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 
 ## Updates
 
-If you installed using my [**Deploy** to Heroku button][heroku_deploy], there's nothing you need to do to get updates. They'll get installed automatically when your bot restarts (unless some kind of disaster or unexpected thing happens). If you want to install manually but still get automatic updates, clone and push my [urgh](https://github.com/Stawberri/twitter_dbooks/tree/urgh) branch.
+If you installed using my [**Deploy** to Heroku button][heroku_deploy], there's nothing you need to do to get updates. They'll get installed automatically when your bot restarts (unless some kind of disaster or unexpected thing happens). If you want to install manually but still get automatic updates, clone and deploy my [urgh](https://github.com/Stawberri/twitter_dbooks/tree/urgh) branch.
 
 &nbsp;
 
