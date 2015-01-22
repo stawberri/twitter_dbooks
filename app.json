@@ -1,7 +1,7 @@
 {
   "name": "twitter_dbooks",
   "description": "Danbooru API + twitter_ebooks",
-  "repository": "https://github.com/Stawberri/twitter_dbooks/tree/urgh",
+  "repository": "https://github.com/Stawberri/twitter_dbooks",
   "keywords": [
     "twitter",
     "bot",
