@@ -59,7 +59,7 @@ As for configuring what exactly your bot searches Danbooru for to post, just typ
 
 There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` %tags. Everything else can go into your bot's profile description. You can type anything you want into your bot's bio, but it has to end with your tags! Just type `@_dbooks` to let your bot know to start reading its own bio, and add your tags behind it.
 
-Note that aside from your `%twitter_` and `%danbooru_` %tags, there's no rule about where your tags have to go. You can even put all of your tags, including your search tags, inside of your ENV setting!
+Note that aside from your `%twitter_` and `%danbooru_` %tags, there's no rule about where your tags have to go. You can even put all of your tags, including your search tags, inside of your ENV setting! If you do that, please still include `@_dbooks` in your bots' descriptions! I would really appreciate it~
 
 ### Example Configuration
 
