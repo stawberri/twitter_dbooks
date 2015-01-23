@@ -27,6 +27,8 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 
 These steps are extremely bare-bones, but I'm gunnya try to make some kind of installation tutorial eventually! It might seem a little daunting, but it's really pretty simple! If you need help, please feel free to [ask me on twitter](http://twitter.com/stawbewwi).
 
+If you prefer a more do-it-yourself approach, please clone [this branch][urgh_branch] if you still want to receive auto-updates!
+
 ## Configuration
 
 All bot configuration is now done through tags. For more information about how tags work, Danbooru's wiki has [a nice page about it](http://danbooru.donmai.us/wiki_pages/43049). Danbooru tags obviously aren't enough to configure your bot, though, so I extended them with my own %tags! They all start with `%`, and pretty much work just like Danbooru's tags. There are %metatags that have a `:` in them, and they work in a `%name:value` format, letting you set some setting to some value. Normal %tags don't have a `:` in them, and they either do something or don't, depending on whether or not you include them.
@@ -114,7 +116,7 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 
 ## Updates
 
-If you installed using my [**Deploy** to Heroku button][heroku_deploy], there's nothing you need to do to get updates. They'll get installed automatically when your bot restarts (unless some kind of disaster or unexpected thing happens). If you want to install manually but still get automatic updates, clone and deploy my [urgh](https://github.com/Stawberri/twitter_dbooks/tree/urgh) branch.
+If you installed using my [**Deploy** to Heroku button][heroku_deploy], there's nothing you need to do to get updates. They'll get installed automatically when your bot restarts (unless some kind of disaster or unexpected thing happens). If you want to install manually but still get automatic updates, clone and deploy my [urgh][urgh_branch] branch.
 
 &nbsp;
 
@@ -127,3 +129,4 @@ Thank you for considering [@_dbooks](https://twitter.com/_dbooks)!
 :strawberry:
 
 [heroku_deploy]: https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2FStawberri%2Ftwitter_dbooks%2Ftree%2Furgh
+[urgh_branch]: https://github.com/Stawberri/twitter_dbooks/tree/urgh
