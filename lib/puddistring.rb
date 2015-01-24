@@ -1,3 +1,5 @@
+require 'open-uri'
+
 # Module used to extend string with helper functions
 module PuddiString
   # Trim a string, optionally adding a thing at the end.
@@ -30,5 +32,18 @@ module PuddiString
 
     # Now just return the trimmed string (extended, of course)!
     (self[0...real_length] + cap).extend PuddiString
+  end
+
+  # Expand t.co urls inside of a string
+  def expand_tcos(keep_trailing_slash = false)
+    # Use keep_trailing_slash as a replacement variable.
+    keep_trailing_slash = keep_trailing_slash ? '/' : ''
+
+    @@puddistring_tco_expansion_hash ||= {}
+    # Search for t.co urls.
+    gsub(%r https?://t.co/\w+ i) do |url|
+      # Save result if necessary and look it up otherwise.
+      (@@puddistring_tco_expansion_hash[url] ||= URI(url).open(ssl_verify_mode: 0).base_uri.to_s).gsub(/\/\z/, keep_trailing_slash) rescue url
+    end
   end
 end
