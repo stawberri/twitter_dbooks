@@ -13,8 +13,8 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [Example Configuration](#example-configuration)
-- [Direct Message Commands](#direct-message-commands)
   - [Multiple bots](#multiple-bots)
+- [Direct Message Commands](#direct-message-commands)
 - [Updates](#updates)
 
 <!-- /MarkdownTOC -->
@@ -45,6 +45,7 @@ All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
 `%owner:`                 |         | Your own user ID number or username (optional)
 `%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
+`%gelbooru:`              |         | Enables Gelbooru style API support (advanced)
 
 Note that there isn't a %tag for your bot's username.
 
