@@ -1,3 +1,7 @@
+require 'open-uri'
+require 'ostruct'
+require 'json'
+
 require 'gelbooru'
 
 # Module used to extend Ebooks with Danbooru features

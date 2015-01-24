@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'json'
+
 # Module used to extend Danbooru with Gelbooru features
 module Gelbooru
   # This isn't a full history population method, but a method that's called by danbooru's.

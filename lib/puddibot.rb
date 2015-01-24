@@ -1,3 +1,5 @@
+require 'twitter_ebooks'
+
 # Custom modifications to primary bots.drb methods
 class Ebooks::Bot
   # Redefine prepare
