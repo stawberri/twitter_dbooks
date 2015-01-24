@@ -124,8 +124,12 @@ module Gelbooru
     # Start building uri
     uri = "http#{post.__api}/"
     # Is there a sample image?
-    uri += post.__sample ? 'sample' : 'images'
-    # Add on the rest
-    uri + "/#{post.__directory}/#{post.__image}"
+    uri += post.__sample ? 'samples' : 'images'
+    # Add on directory
+    uri += "/#{post.__directory}/"
+    # Again, is there a sample image?
+    uri +=  post.__sample ? 'sample_' : ''
+    # Finish off.
+    uri += "#{post.__image}"
   end
 end

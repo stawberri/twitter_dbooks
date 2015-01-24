@@ -238,6 +238,13 @@ module Danbooru
       dm_owner "#{error.class}: #{error.message}" if config.errors
       log "#{error.class}: #{error.message}\n\t#{error.backtrace.join("\n\t")}"
       false
+    rescue OpenURI::HTTPError => error
+      error_message = "#{error.message} - while tweeting image\n\t"
+      body = error.io.read
+      error_message << body.gsub(/\n\t?/, "\n\t")
+      dm_owner "#{error.class}: #{error.message}" if config.errors
+      log "#{error_message}\n\t#{error.backtrace.join("\n\t")}"
+      false
     end
   end
 
