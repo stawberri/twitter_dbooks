@@ -14,6 +14,7 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 - [Configuration](#configuration)
   - [Example Configuration](#example-configuration)
   - [Multiple bots](#multiple-bots)
+  - [Gelbooru API Support](#gelbooru-api-support)
 - [Direct Message Commands](#direct-message-commands)
 - [Updates](#updates)
 
@@ -45,9 +46,9 @@ All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 `%danbooru_api_key:`      |         | Danbooru API Key (optional)
 `%owner:`                 |         | Your own user ID number or username (optional)
 `%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
-`%gelbooru:`              |         | Enables Gelbooru style API support (advanced)
+`%gelbooru:`              |         | Enables [Gelbooru style API support][gelbs] (advanced)
 
-Note that there isn't a %tag for your bot's username.
+Note that you can only have one of each %metatag, and there isn't a %tag for your bot's username.
 
 %tags                     | What it does
 --------------------------|--------------
@@ -55,6 +56,7 @@ Note that there isn't a %tag for your bot's username.
 `%errors`                 | Send error logs to owner via DMs
 
 [rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
+[gelbs]: #gelbooru-api-support
 
 As for configuring what exactly your bot searches Danbooru for to post, just type in your search tags along with your settings tags! And remember that there isn't any particular order you have to put them in. You can have your search tags first, last, or even between your %tags.
 
@@ -88,6 +90,15 @@ You can run multiple bots with the same app! Just create more than one ENV setti
 %twitter_token:1235-SECRETAGAIN2  %twitter_token_secret:YUPITSSECRET2,
 %twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3
 %twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
+```
+
+### Gelbooru API Support
+
+@_dbooks now has (limited) support for Gelbooru-style APIs, like Gelbooru or Safebooru. To enable it, use `%gelbooru:`, setting its value to the root address (home page) address of the site you're trying to use. If it starts with `http://`, you don't need to include it. If you include this %metatag, your Danbooru credentials will be ignored, and your bot will switch to Gelbooru mode.
+
+```
+%gelbooru:safebooru.org
+%gelbooru:gelbooru.com
 ```
 
 ## Direct Message Commands
