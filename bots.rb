@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.0.4'
+DBOOKS_VERSION = '@_dbooks v4.0.5'
 DBOOKS_VERSION_NAME = 'Death to Manual Updates'
 
 require 'ostruct'

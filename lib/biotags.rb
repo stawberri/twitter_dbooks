@@ -52,11 +52,17 @@ module Biotags
       key.downcase!
       key.gsub!(/\W/,'_')
 
-      # Add it to ostruct!
-      if key =~ /tags?/
-        tags_array |= [value]
+      # Is value empty?
+      if value.is_a?(String) && value.empty?
+        # Remove it from ostruct, if it exists.
+        ostruct.delete_field key
       else
-        ostruct[key] = value
+        # Add it to ostruct!
+        if key =~ /tags?/
+          tags_array |= [value]
+        else
+          ostruct[key] = value
+        end
       end
     end
 
