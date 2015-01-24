@@ -44,7 +44,7 @@ module Danbooru
     # Create a history array if it doesn't already exist
     @danbooru_post_history ||= []
 
-    post_id = [post_id.to_i]
+    post_id = [post_id.to_s]
 
     # Convert it to an integer and then add it
     @danbooru_post_history |= post_id
@@ -56,7 +56,7 @@ module Danbooru
   def danbooru_history_include?(post_id)
     return false unless defined? @danbooru_post_history
 
-    @danbooru_post_history.include? post_id.to_i
+    @danbooru_post_history.include? post_id.to_s
   end
 
   # Wrapper for danbooru requests
