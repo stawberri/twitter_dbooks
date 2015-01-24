@@ -14,7 +14,7 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 - [Configuration](#configuration)
   - [Example Configuration](#example-configuration)
 - [Direct Message Commands](#direct-message-commands)
-- [Multiple bots](#multiple-bots)
+  - [Multiple bots](#multiple-bots)
 - [Updates](#updates)
 
 <!-- /MarkdownTOC -->
@@ -51,7 +51,7 @@ Note that there isn't a %tag for your bot's username.
 %tags                     | What it does
 --------------------------|--------------
 `%no_deleted`             | Don't tweet deleted posts
-`%errors`                 | Send error logs to owner via DMs (unformatted)
+`%errors`                 | Send error logs to owner via DMs
 
 [rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
 
@@ -74,6 +74,19 @@ Here's an example bot that posts pictures of cat-people containing one girl ever
 **Profile Bio**
 ```
 Hello! I'm an example bot running: @_dbooks 1girl cat_ears %every:9m
+```
+
+### Multiple bots
+
+You can run multiple bots with the same app! Just create more than one ENV setting string as indicated above, string them all together, separated by commas, and dump them all into DBOOKS. Note that each bot is completely separate, so even if some of your tags are the same, you'll need to include them for each of your bots.
+
+```
+1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
+%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original
+%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
+%twitter_token:1235-SECRETAGAIN2  %twitter_token_secret:YUPITSSECRET2,
+%twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3
+%twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
 ```
 
 ## Direct Message Commands
@@ -99,19 +112,6 @@ To reiterate, config %tags (the ones above) don't work in DMs. You get these ins
 **Restart your bot**
 ```
 @_dbooks %restart
-```
-
-## Multiple bots
-
-You can run multiple bots with the same app! Just create more than one ENV setting string as indicated above, string them all together, separated by commas, and dump them all into DBOOKS. Note that each bot is completely separate, so even if some of your tags are the same, you'll need to include them for each of your bots.
-
-```
-1girl %twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
-%twitter_token:1234-SECRETAGAIN %twitter_token_secret:YUPITSSECRET, original
-%twitter_key:SECRETSECRETS %twitter_secret:EVENMORESECRET
-%twitter_token:1235-SECRETAGAIN2  %twitter_token_secret:YUPITSSECRET2,
-%twitter_key:SECRETSECRETS3 %twitter_secret:EVENMORESECRET3
-%twitter_token:1236-SECRETAGAIN3 %twitter_token_secret:YUPITSSECRET3
 ```
 
 ## Updates
