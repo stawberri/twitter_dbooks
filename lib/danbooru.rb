@@ -1,7 +1,12 @@
+require 'gelbooru'
+
 # Module used to extend Ebooks with Danbooru features
 module Danbooru
   # Default danbooru request parameters
   attr_reader :danbooru_default_params
+
+  # Include alternate apis
+  include Gelbooru
 
   # Initialization for danbooru methods
   def danbooru_configure
@@ -31,6 +36,8 @@ module Danbooru
 
           # If it hasn't been set, set last tweet time to time of this tweet
           @last_timed_tweet_time ||= tweet.created_at
+        else
+          gelbooru_populate_history uri
         end
       end
     end
@@ -63,6 +70,9 @@ module Danbooru
   def danbooru_get(query = nil, parameters = {})
     query ||= 'posts'
 
+    # Call gelbooru_get instead if it's enabled
+    return gelbooru_get query, parameters if config.gelbooru
+
     # Begin generating a URI
     uri = "https://danbooru.donmai.us/#{query}.json"
 
@@ -75,7 +85,7 @@ module Danbooru
       # Create an array of parameters
       parameters_array = []
       parameters.each do |key, value|
-        # Convert key to a string if it's a symbol
+        # Ensure key and value are strings, or URI.escape will be sad
         parameters_array << "#{URI.escape key.to_s}=#{URI.escape value.to_s}"
       end
       # Merge them and add them to uri
@@ -207,10 +217,10 @@ module Danbooru
     tag_string = ' ' + tag_string.trim_ellipsis(93) unless tag_string.empty?
 
     # Get post URI
-    post_uri = "https://danbooru.donmai.us/posts/#{post.id}"
+    post_uri = gelbooru_post_uri(post.id) || "https://danbooru.donmai.us/posts/#{post.id}"
 
     # Get image URI
-    image_uri = "https://danbooru.donmai.us#{post.large_file_url}"
+    image_uri = gelbooru_image_uri(post) || "https://danbooru.donmai.us#{post.large_file_url}"
 
     # Tweet post!
     log "Tweeting post #{post.id}, rating: #{post.rating}"

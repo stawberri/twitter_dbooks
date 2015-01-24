@@ -22,6 +22,23 @@ module Biotags
     @config = biotags_parse "#{CONFIG_DEFAULT} #{@initialization_config} #{biotag_string}"
   end
 
+  # Parses uris out of user descriptions, if there are any
+  def biotags_parse_uri(text)
+    # Return unless this is actually a string.
+    return text unless text.is_a? String
+
+    # Return unless user stuff is available
+    return text unless user.is_a? Twitter::User
+    return text unless user.description_uris?
+
+    # Loop through uris we know about
+    user.description_uris.each do |uri|
+      text = text.gsub uri.url.to_s, uri.expanded_url.to_s
+    end
+
+    text
+  end
+
   # Parse a biotag string into a openstruct.
   def biotags_parse(tag_string)
     # Create new openstruct
@@ -57,6 +74,8 @@ module Biotags
         # Remove it from ostruct, if it exists.
         ostruct.delete_field key
       else
+        # Parse tags in it.
+        value = biotags_parse_uri value
         # Add it to ostruct!
         if key =~ /tags?/
           tags_array |= [value]
