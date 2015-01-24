@@ -29,7 +29,6 @@ module Biotags
 
     # Return unless user stuff is available
     return text unless user.is_a? Twitter::User
-    return text unless user.description_uris?
 
     # Loop through uris we know about
     user.description_uris.each do |uri|
