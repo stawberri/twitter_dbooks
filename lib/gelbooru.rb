@@ -3,7 +3,7 @@ module Gelbooru
   # This isn't a full history population method, but a method that's called by danbooru's.
   def gelbooru_populate_history(uri)
     # Is it a gelbooru-like url?
-    if match = uri.match(%r (?<api>s?://[\w\.:]*)/index\.php\?page=post&s=view&id=(?<post_id>\d+) i)
+    if match = uri.expanded_url.to_s.match(%r (?<api>s?://[\w\.:]*)/index\.php\?page=post&s=view&id=(?<post_id>\d+) i)
       # Add it.
       danbooru_history_add "gelbooru#{match['api'].downcase} #{match['post_id']}"
     end
