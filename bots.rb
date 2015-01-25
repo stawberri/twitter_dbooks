@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.1.0'
+DBOOKS_VERSION = '@_dbooks v4.1.1'
 DBOOKS_VERSION_NAME = 'Jelly Cubes'
 
 require 'ostruct'
