@@ -43,7 +43,7 @@ module PuddiString
     # Search for t.co urls.
     gsub(%r https?://t.co/\w+ i) do |url|
       # Load an expansion and save it.
-      (@@puddistring_tco_expansion_hash[url] ||= URI(url).open(ssl_verify_mode: 0).base_uri.to_s).gsub(/\/\z/, keep_trailing_slash) rescue url
+      (@@puddistring_tco_expansion_hash[url] ||= URI(url).open(ssl_verify_mode: 0) { |io| io.base_uri.to_s }).gsub(/\/\z/, keep_trailing_slash) rescue url
     end
   end
 end
