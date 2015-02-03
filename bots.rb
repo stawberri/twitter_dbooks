@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.1.1'
+DBOOKS_VERSION = '@_dbooks v4.1.2'
 DBOOKS_VERSION_NAME = 'Jelly Cubes'
 
 require 'ostruct'
@@ -34,6 +34,11 @@ class DbooksBot < Ebooks::Bot
     @access_token_secret = config.twitter_token_secret
 
     danbooru_configure
+  end
+
+  def on_startup
+    # Populate history
+    danbooru_populate_history
   end
 
   def manage_owner_object

@@ -20,9 +20,6 @@ module Danbooru
       @danbooru_default_params['login'] = config.danbooru_login
       @danbooru_default_params['api_key'] = config.danbooru_api_key
     end
-
-    # Populate history
-    danbooru_populate_history
   end
 
   # Populate post history from twitter
