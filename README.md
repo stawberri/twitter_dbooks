@@ -8,7 +8,7 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 
 ## Contents
 
-<!-- MarkdownTOC autolink=true depth=0 bracket=round -->
+<!-- MarkdownTOC -->
 
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -26,7 +26,7 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 2. Fill out Heroku's deployment form, referring to [Configuration](#configuration) below for details.
 3. Scale your Heroku worker dyno to 1:1X.
 
-These steps are extremely bare-bones, but I'm gunnya try to make some kind of installation tutorial eventually! It might seem a little daunting, but it's really pretty simple! If you need help, please feel free to [ask me on twitter](http://twitter.com/stawbewwi).
+If you need a little more guidance in creating a @_dbooks bot, I made a little [installation guide](https://github.com/Stawberri/twitter_dbooks/wiki/Installation-Guide) you could use! If that's not enough, please feel free to [ask me on twitter](http://twitter.com/stawbewwi) for extra help~
 
 If you prefer a more do-it-yourself approach, please clone [this branch][urgh_branch] if you still want to receive auto-updates!
 
