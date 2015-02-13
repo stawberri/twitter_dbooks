@@ -93,7 +93,7 @@ module Gelbooru
       'file_ext' => post['image'].match(/\.(?<ext>\w+)\z/)['ext'],
       'rating' => post.empty? ? '' : post['rating'][0],
       'tag_string_character' => '',
-      'tag_string_copyright' => post['tags'],
+      'tag_string_copyright' => config.hide_gelbooru_tags ? ' ' : post['tags'],
       'tag_string_artist' => '',
       '__api' => api,
       '__api_type' => :gelbooru,
