@@ -211,11 +211,15 @@ module Danbooru
     # Is it sensitive?
     sensitive = post.rating != 's'
 
-    # Get a tag string
-    tag_string = danbooru_tag_string post
-    tag_string.extend PuddiString
-    # 93 = 140 - 2 (spaces) - 23 (https url) - 22 (http url)
-    tag_string = ' ' + tag_string.trim_ellipsis(93) unless tag_string.empty?
+    if config.hide_tags
+      tag_string = ''
+    else
+      # Get a tag string
+      tag_string = danbooru_tag_string post
+      tag_string.extend PuddiString
+      # 93 = 140 - 2 (spaces) - 23 (https url) - 22 (http url)
+      tag_string = ' ' + tag_string.trim_ellipsis(93) unless tag_string.empty?
+    end
 
     # Get post URI
     post_uri = gelbooru_post_uri(post.id) || "https://danbooru.donmai.us/posts/#{post.id}"

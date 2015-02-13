@@ -1,5 +1,5 @@
-DBOOKS_VERSION = '@_dbooks v4.1.2'
-DBOOKS_VERSION_NAME = 'Jelly Cubes'
+DBOOKS_VERSION = '@_dbooks v4.1.3'
+DBOOKS_VERSION_NAME = 'Toggling Tags'
 
 require 'ostruct'
 require 'open-uri'

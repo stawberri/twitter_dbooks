@@ -54,7 +54,7 @@ Note that you can only have one of each %metatag, and there isn't a %tag for you
 --------------------------|--------------
 `%no_deleted`             | Don't tweet deleted posts
 `%errors`                 | Send error logs to owner via DMs
-`%hide_gelbooru_tags`     | Prevents display of tags for images posted from gelbooru-style sites.
+`%hide_tags`              | Don't show tag information inside of tweets
 
 [rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
 [gelbs]: #gelbooru-api-support
