@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.1.3'
+DBOOKS_VERSION = '@_dbooks v4.2.0'
 DBOOKS_VERSION_NAME = 'Toggling Tags'
 
 require 'ostruct'
