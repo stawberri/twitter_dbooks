@@ -62,7 +62,7 @@ module Biotags
         # Parse tags in it.
         value = value.extend(PuddiString).expand_tcos if value.is_a? String
         # Add it to ostruct!
-        if key =~ /tags?/
+        if key =~ /\Atags?\z/
           tags_array |= [value]
         else
           ostruct[key] = value
