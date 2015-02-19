@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.2.0'
+DBOOKS_VERSION = '@_dbooks v4.2.1'
 DBOOKS_VERSION_NAME = 'Toggling Tags'
 
 require 'ostruct'
@@ -115,9 +115,12 @@ class DbooksBot < Ebooks::Bot
 
   # If the tweet timer isn't running at the desired speed, edit it.
   def manage_tweet_timer
+    # Use an empty string if config.every isn't set for some reason.
+    frequency_string = config.every || ''
+
     # Return if everything is fine
     if @tweet_timer
-      return if @tweet_timer.original == config.every
+      return if @tweet_timer.original == frequency_string
 
       # Delete old @tweet_timer now that we've gotten rid of cases where it already exists
       @tweet_timer.unschedule if @tweet_timer.is_a? Rufus::Scheduler::Job
@@ -125,18 +128,15 @@ class DbooksBot < Ebooks::Bot
 
     begin
       # Repeat this, saving it as a new @tweet_timer
-      @tweet_timer = scheduler.schedule_every config.every do
+      @tweet_timer = scheduler.schedule_every frequency_string do
         danbooru_select_and_tweet_post
       end
 
-      # Create a last time, if it doesn't already exist.
-      @last_timed_tweet_time ||= Time.new 0
-
       # Update tweet timer now that we've created it.
-      update_tweet_timer
+      update_tweet_timer if @last_timed_tweet_time.is_a? Time
     rescue ArgumentError
-      # config.every is invalid, so create a fake timer.
-      @tweet_timer = OpenStruct.new original: config.every
+      # frequency_string is invalid, so create a fake timer.
+      @tweet_timer = OpenStruct.new original: frequency_string
     end
   end
 

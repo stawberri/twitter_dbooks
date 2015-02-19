@@ -2,6 +2,14 @@ require 'ostruct'
 
 # Configuration module
 module Biotags
+  # Default config options
+  CONFIG_DEFAULT = '%every:never'
+
+  # Tags that become strung together instead of being overwritten
+  CONFIG_DUPLICATABLE = {
+    'tags' => ' '
+  }
+
   # Update @config
   def biotags_update
     # Fetch twitter description and grab its biotags
@@ -28,8 +36,6 @@ module Biotags
   def biotags_parse(tag_string)
     # Create new openstruct
     ostruct = OpenStruct.new
-    # Create a tags array to hold tags for now
-    tags_array = []
 
     tag_string.split(' ').each do |item|
       # Is it a biotag?
@@ -38,7 +44,7 @@ module Biotags
         item = item[1..-1]
       else
         # It isn't. Make it one.
-        item = "tag:#{item}"
+        item = "tags:#{item}"
       end
 
       # Is it a key/value?
@@ -59,23 +65,19 @@ module Biotags
         # Remove it from ostruct, if it exists.
         ostruct.delete_field key
       else
-        # Parse tags in it.
+        # Expand shortened urls in it.
         value = value.extend(PuddiString).expand_tcos if value.is_a? String
-        # Add it to ostruct!
-        if key =~ /\Atags?\z/
-          tags_array |= [value]
+        # Is this key already set?
+        if CONFIG_DUPLICATABLE.has_key?(key) && ostruct[key].is_a?(String)
+          # It is, so append it unless it's 'true'.
+          ostruct[key] = "#{ostruct[key]}#{CONFIG_DUPLICATABLE[key]}#{value}" unless value == true
         else
+          # It isn't, so just set it.
           ostruct[key] = value
         end
       end
     end
 
-    # Move tags_array into ostruct
-    ostruct.tags = tags_array.join(' ')
-
     ostruct
   end
-
-  # Default config options
-  CONFIG_DEFAULT = '%every:never'
 end
