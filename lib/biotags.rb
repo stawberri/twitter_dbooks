@@ -84,6 +84,9 @@ module Biotags
       end
     end
 
+    # Ensure that 'tags' exists.
+    ostruct.tags ||= ''
+
     ostruct
   end
 end
