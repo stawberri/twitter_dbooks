@@ -187,7 +187,7 @@ module Danbooru
 
   # Tweet a post with its post data
   def danbooru_tweet_post(post, options = {})
-    options = {bypass_history: false, keep_timer: false}.merge options
+    options = {bypass_checks: false, keep_timer: false}.merge options
     options = OpenStruct.new options
 
     # Make post an OpenStruct
@@ -199,8 +199,12 @@ module Danbooru
       post = OpenStruct.new post
     end
 
-    # Is post deleted, and we don't want deleted posts?
-    return false if !options.bypass && config.no_deleted && post.is_deleted
+    # Do post skip checks
+    unless options.bypass_checks
+      # Is post deleted, and we don't want deleted posts?
+      return false if config.no_deleted && post.is_deleted
+      return false if (config.blacklist.split(' ') & post.tag_string.split(' ')).any?
+    end
 
     # Add post to history, since we're planning to either tweet it or never tweet it now.
     danbooru_history_add post.id
@@ -234,7 +238,7 @@ module Danbooru
 
       unless options.keep_timer
         # Update last time variable
-        @last_timed_tweet_time = Time.now
+        @last_timed_tweet_time = tweet_return.created_at
         update_tweet_timer
       end
 

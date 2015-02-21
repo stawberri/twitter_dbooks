@@ -95,6 +95,7 @@ module Gelbooru
       'tag_string_character' => '',
       'tag_string_copyright' => post['tags'],
       'tag_string_artist' => '',
+      'tag_string' => post['tags'],
       '__api' => api,
       '__api_type' => :gelbooru,
       '__directory' => post['directory'],
