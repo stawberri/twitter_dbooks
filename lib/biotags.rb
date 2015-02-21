@@ -7,8 +7,7 @@ module Biotags
 
   # Tags that become strung together instead of being overwritten
   CONFIG_DUPLICATABLE = {
-    'tags' => ' ',
-    'blacklist' => ' '
+    'tags' => ' '
   }
 
   # Update @config
@@ -47,11 +46,6 @@ module Biotags
         # It isn't. Make it one.
         item = "tags:#{item}"
       end
-
-      # Process shortcut %tags
-
-      item = item\
-        .gsub(/\A-/, 'blacklist:')
 
       # Is it a key/value?
       if match_data = item.match(/:/)

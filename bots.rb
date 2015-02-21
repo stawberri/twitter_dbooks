@@ -1,5 +1,5 @@
-DBOOKS_VERSION = '@_dbooks v4.3.0'
-DBOOKS_VERSION_NAME = 'Blacklist Blocks'
+DBOOKS_VERSION = '@_dbooks v4.2.1'
+DBOOKS_VERSION_NAME = 'Toggling Tags'
 
 require 'ostruct'
 require 'open-uri'
@@ -198,7 +198,7 @@ class DbooksBot < Ebooks::Bot
           # Treat dm like a tag string.
           posts = danbooru_posts dm_data.tags
           # Select a random post from first page
-          tweet = danbooru_tweet_post posts.sample, bypass_checks: true unless posts.empty?
+          tweet = danbooru_tweet_post posts.sample, bypass_history: true unless posts.empty?
           dm_owner tweet.uri.to_s if tweet
         end
 

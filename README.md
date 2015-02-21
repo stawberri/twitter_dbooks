@@ -1,4 +1,4 @@
-# @_dbooks: Blacklist Blocks
+# @_dbooks: Toggling Tags
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)][heroku_deploy]
 
@@ -36,17 +36,17 @@ All bot configuration is now done through tags. For more information about how t
 
 All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 
-%metatags                 | Default     | What it does
---------------------------|-------------|---------------
-`%twitter_key:`           |             | Twitter Consumer Key
-`%twitter_secret:`        |             | Twitter Consumer Secret
-`%twitter_token:`         |             | Twitter Access Token
-`%twitter_token_secret:`  |             | Twitter Access Token Secret
-`%danbooru_login:`        | *optional*  | Danbooru Username
-`%danbooru_api_key:`      | *optional*  | Danbooru API Key
-`%owner:`                 | *optional*  | Your own user ID number or username
-`%every:`                 | `never`     | Time between tweets in an '[1h2m3s][rufs]' format
-`%gelbooru:`              | *optional*  | Enables [Gelbooru API support][gelbs] (advanced)
+%metatags                 | Default | What it does
+--------------------------|---------|---------------
+`%twitter_key:`           |         | Twitter Consumer Key
+`%twitter_secret:`        |         | Twitter Consumer Secret
+`%twitter_token:`         |         | Twitter Access Token
+`%twitter_token_secret:`  |         | Twitter Access Token Secret
+`%danbooru_login:`        |         | Danbooru Username (optional)
+`%danbooru_api_key:`      |         | Danbooru API Key (optional)
+`%owner:`                 |         | Your own user ID number or username (optional)
+`%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
+`%gelbooru:`              |         | Enables [Gelbooru style API support][gelbs] (advanced)
 
 Note that unless I've stated otherwise, you can only have one of each %metatag, and there isn't a %tag for your bot's username.
 
@@ -59,12 +59,7 @@ Note that unless I've stated otherwise, you can only have one of each %metatag, 
 [rufs]: https://github.com/jmettraux/rufus-scheduler#rufus-scheduler
 [gelbs]: #gelbooru-api-support
 
-There are also some other "special case" shortcut tags that you can use that don't really adhere to the formats above.
-
-tag                       | What it does
---------------------------|---------------
-`search_tag`              | To set your search tags, just type them as you would in a search.
-`%-search_tag`            | To blacklist certain tags, add a `%-` in front of them.
+As for configuring what exactly your bot searches Danbooru for to post, just type in your search tags along with your settings tags! And remember that there isn't any particular order you have to put them in. You can have your search tags first, last, or even between your %tags.
 
 There are two places where you can put your tags: your bot's profile, and your bot's environment variables (ENV Settings). Your ENV Settings are for things that are meant to be secret and not likely to change often, like your `%twitter_` and `%danbooru_` %tags. Everything else can go into your bot's profile description. You can type anything you want into your bot's bio, but it has to end with your tags! Just type `@_dbooks` to let your bot know to start reading its own bio, and add your tags behind it.
 
