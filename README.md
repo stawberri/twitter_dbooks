@@ -48,7 +48,7 @@ All %tags (tags that start with `%`) don't count toward your Danbooru tag limit.
 `%every:`                 | `never` | Time between tweets in an '[1h2m3s][rufs]' format.
 `%gelbooru:`              |         | Enables [Gelbooru style API support][gelbs] (advanced)
 
-Note that unless I've stated otherwise, you can only have one of each %metatag, and there isn't a %tag for your bot's username.
+Note that you can only have one of each %metatag, and there isn't a %tag for your bot's username.
 
 %tags                     | What it does
 --------------------------|--------------
