@@ -124,7 +124,7 @@ module Danbooru
 
   # Fetch posts from danbooru
   def danbooru_posts(tags = nil, page = 1)
-    tags ||= config.tags
+    tags ||= config.tags || ''
 
     danbooru_get 'posts', page: page, limit: 100, tags: tags
   end
@@ -203,7 +203,7 @@ module Danbooru
     unless options.bypass_checks
       # Is post deleted, and we don't want deleted posts?
       return false if config.no_deleted && post.is_deleted
-      return false if (config.blacklist.split(' ') & post.tag_string.split(' ')).any?
+      return false if config.blacklist && (config.blacklist.split(' ') & post.tag_string.split(' ')).any?
     end
 
     # Add post to history, since we're planning to either tweet it or never tweet it now.
@@ -259,6 +259,9 @@ module Danbooru
 
   # Pick and tweet a post based on tag settings.
   def danbooru_select_and_tweet_post(tag_string = config.tags)
+    # If config.tags doesn't exist
+    tag_string ||= ''
+
     # Hold tweeted post in a variable
     posted_tweet = false
 

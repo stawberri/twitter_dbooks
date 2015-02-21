@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.3.1'
+DBOOKS_VERSION = '@_dbooks v4.3.2'
 DBOOKS_VERSION_NAME = 'Blacklist Blocks'
 
 require 'ostruct'
@@ -194,7 +194,7 @@ class DbooksBot < Ebooks::Bot
         end
 
         # Parse tags to post
-        unless dm_data.tags.empty?
+        if dm_data.tags.is_a? String
           # Treat dm like a tag string.
           posts = danbooru_posts dm_data.tags
           # Select a random post from first page
