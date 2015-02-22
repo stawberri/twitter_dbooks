@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.3.2'
+DBOOKS_VERSION = '@_dbooks v4.3.3'
 DBOOKS_VERSION_NAME = 'Blacklist Blocks'
 
 require 'ostruct'

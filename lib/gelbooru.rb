@@ -9,6 +9,10 @@ module Gelbooru
     if match = uri.expanded_url.to_s.match(%r (?<api>s?://[\w\.:]*)/index\.php\?page=post&s=view&id=(?<post_id>\d+) i)
       # Add it.
       danbooru_history_add "gelbooru#{match['api'].downcase} #{match['post_id']}"
+
+      true
+    else
+      false
     end
   end
 
