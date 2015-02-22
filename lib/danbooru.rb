@@ -38,7 +38,10 @@ module Danbooru
           # If it hasn't been set, set last tweet time to time of this tweet
           @last_timed_tweet_time ||= tweet.created_at
         else
-          gelbooru_populate_history uri
+          # If gelbooru_poplate_history succeeds, set last tweet time if it hasn't been set
+          unless gelbooru_populate_history(uri) == nil
+            @last_timed_tweet_time ||= tweet.created_at
+          end
         end
       end
     end
