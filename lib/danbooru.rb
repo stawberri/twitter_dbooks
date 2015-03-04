@@ -203,7 +203,7 @@ module Danbooru
     # Do post skip checks
     unless options.bypass_checks
       # Is post deleted, and we don't want deleted posts?
-      return false if config.no_deleted && post.is_deleted
+      return false if config.no_deleted && (post.is_deleted || post.is_banned)
       return false if config.blacklist && (config.blacklist.split(' ') & post.tag_string.split(' ')).any?
     end
 
