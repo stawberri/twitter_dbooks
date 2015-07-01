@@ -1,4 +1,4 @@
-DBOOKS_VERSION = '@_dbooks v4.3.4'
+DBOOKS_VERSION = '@_dbooks v4.3.5'
 DBOOKS_VERSION_NAME = 'Blacklist Blocks'
 
 require 'ostruct'
@@ -109,6 +109,8 @@ class DbooksBot < Ebooks::Bot
 
   # Corrects timer
   def update_tweet_timer
+    raise TypeError, "@last_timed_tweet_time is not a Time (#{@last_timed_tweet_time.class})" unless @last_timed_tweet_time.is_a? Time
+
     # Modify timer by difference from current time.
     @tweet_timer.next_time = @last_timed_tweet_time + @tweet_timer.frequency if @tweet_timer.is_a? Rufus::Scheduler::Job
   end

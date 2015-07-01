@@ -44,6 +44,9 @@ module Danbooru
       end
     end
 
+    # Create a new time if a time hasn't been set at this point
+    @last_timed_tweet_time ||= Time.at 0
+
     # Just to future proof, update tweet timer.
     update_tweet_timer
   end
