@@ -1,3 +1,10 @@
+# Project inactive
+
+This project was created before Heroku changed its pricing scheme to force 6 hours of downtime per day for its free dynos. Their change proved to be rather discouraging for me, and I decided that I would take down my image bots. This means that I won't be working on improving them anymore, and @_dbooks won't be getting much attention from me. I will probably only be providing minimal amounts of support for @_dbooks in the future.
+
+It's been fun, and I learned a lot! :strawberry:
+
+------------------------------------------
 # @_dbooks: Blacklist Blocks
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)][heroku_deploy]
