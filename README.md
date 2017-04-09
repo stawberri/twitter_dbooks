@@ -31,7 +31,7 @@ See [@kangaroo_dbooks](https://twitter.com/kangaroo_dbooks) for an example bot.
 
 1. Click [**Deploy** to Heroku][heroku_deploy].
 2. Fill out Heroku's deployment form, referring to [Configuration](#configuration) below for details.
-3. Scale your Heroku worker dyno to 1:1X.
+3. ~~Scale your Heroku worker dyno to 1:1X.~~ Turn on your worker dyno.
 
 If you need a little more guidance in creating a @_dbooks bot, I made a little [installation guide](https://github.com/Stawberri/twitter_dbooks/wiki/Installation-Guide) you could use! If that's not enough, please feel free to [ask me on twitter](http://twitter.com/stawbewwi) for extra help~
 
