@@ -8,6 +8,7 @@ It's been fun, and I learned a lot! :strawberry:
 # @_dbooks: Blacklist Blocks
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)][heroku_deploy]
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 @_dbooks is a pre-written [twitter_ebooks](https://github.com/mispy/twitter_ebooks) bot that allows *anyone* to set up their very own anime image tweeting bot. Unlike most other image tweeting bots, @_dbooks doesn't require you to maintain a collection of images (though you could, if you wanted to). It automatically tweets images from the ever-expanding [image cataloging site Danbooru](http://danbooru.donmai.us/posts?tags=rating%3As), filtered by your choice of search parameters. As Danbooru gains new images, so will your bot.
 
